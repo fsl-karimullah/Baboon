@@ -1,0 +1,11 @@
+
+const storageKey = {
+    HAS_VISITED_ONBOARDING: 'HAS_VISITED_ONBOARDING',
+    TOKEN: 'TOKEN',
+    DATA_USER: 'DATA_USER',
+    BLUETOOTHID: 'BLUETOOTHID',
+    BOUNDADDRESS: 'BOUNDADDRESS',
+    SIGN_DANA: 'SIGN_DANA',
+};
+
+export default storageKey;
