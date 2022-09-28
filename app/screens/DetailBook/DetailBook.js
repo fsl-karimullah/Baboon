@@ -7,7 +7,7 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
-import {black} from '../../resource/colors';
+import {black, gray, gray_100, gray_primary} from '../../resource/colors';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
 const DetailBook = ({route, navigation}) => {
   const tailwind = useTailwind();
@@ -30,11 +30,37 @@ const DetailBook = ({route, navigation}) => {
               {author}
             </Text>
           </View>
+          <View
+            style={[
+              tailwind('flex-row justify-around py-2 px-3 border-gray-200'),
+              styles.containerDetail,
+            ]}>
+            <View>
+              <Text style={styles.textTitle2}>Pages</Text>
+              <Text style={[styles.textAuthor, tailwind('text-center pt-2')]}>
+                90
+              </Text>
+            </View>
+            <View style={styles.verticleLine}></View>
+            <View>
+              <Text style={styles.textTitle2}>Year</Text>
+              <Text style={[styles.textAuthor, tailwind('text-center pt-2')]}>
+                2020
+              </Text>
+            </View>
+            <View style={styles.verticleLine}></View>
+            <View>
+              <Text style={styles.textTitle2}>Language</Text>
+              <Text style={[styles.textAuthor, tailwind('text-center pt-2')]}>
+                Indonesia
+              </Text>
+            </View>
+          </View>
         </View>
         <View style={tailwind('m-5')}>
           <View style={tailwind('my-4')}>
             <Text style={[tailwind(''), styles.textTitle]}>Tentang Author</Text>
-            <Text style={[tailwind(), styles.textAuthor]}>
+            <Text style={[tailwind(), styles.textDesc]}>
               Laborum aute aliquip sit est duis adipisicing sit ex veniam culpa.
               Ea sint id elit ullamco. Nostrud mollit qui ad amet. Duis anim ut
               nulla officia ullamco dolor nostrud do adipisicing. Do nisi ut id
@@ -44,7 +70,7 @@ const DetailBook = ({route, navigation}) => {
           </View>
           <View>
             <Text style={[tailwind(''), styles.textTitle]}>Sinopsis</Text>
-            <Text style={[tailwind(), styles.textAuthor]}>
+            <Text style={[tailwind(), styles.textDesc]}>
               Est nostrud non et anim reprehenderit. Ad tempor reprehenderit
               amet aute amet Lorem veniam cillum sit. Eiusmod fugiat dolore
               ullamco nulla tempor veniam sunt et id. Laborum consequat ea
@@ -99,8 +125,30 @@ const styles = StyleSheet.create({
     color: black,
     fontSize: 16,
   },
+  textTitle2: {
+    fontFamily: FONT_PRIMARY_BOLD,
+    color: black,
+    fontSize: 14,
+  },
   textAuthor: {
     fontFamily: FONT_PRIMARY_REGULAR,
     fontSize: 13,
+  },
+  textDesc: {
+    fontFamily: FONT_PRIMARY_REGULAR,
+    fontSize: 13,
+    textAlign: 'justify',
+  },
+  containerDetail: {
+    borderWidth: 1,
+    borderRadius: 10,
+    width: widthPercentageToDP(80),
+    alignSelf: 'center',
+  },
+  verticleLine: {
+    height: '85%',
+    width: 1,
+    backgroundColor: gray_100,
+    alignSelf: 'center',
   },
 });

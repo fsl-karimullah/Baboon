@@ -28,10 +28,9 @@ import TitleButton from '../../components/Button/TitleButton';
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
-//jumlah halaman, tahun terbit,
+
 const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
   const [refreshing, setRefreshing] = React.useState(false);
-
   const [isLoading, setisLoading] = useState(false);
   const tailwind = useTailwind();
   const [Data, setData] = useState();
@@ -147,7 +146,7 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
               renderItem={({item, index}) => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate(item.navigationTo)}
-                  style={[tailwind('flex flex-row flex-wrap mr-2 mb-2')]}>
+                  style={[tailwind('flex flex-row flex-wrap mr-5 mb-2')]}>
                   <View>
                     <Text style={styles.text}>{item.title}</Text>
                   </View>
@@ -156,7 +155,10 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
             />
           </View>
           <View>
-            <TitleButton title="For You" />
+            <TitleButton
+              title="For You"
+              onPress={() => navigation.navigate('ForYouScreen')}
+            />
           </View>
           {isLoading ? (
             <Shimmer>
@@ -178,6 +180,8 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
                 horizontal={true}
                 initialNumToRender={10}
                 showsHorizontalScrollIndicator={false}
+                onRefresh={onRefresh}
+                refreshing={refreshing}
                 data={bookData.data}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => (
@@ -207,7 +211,10 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
             </View>
           )}
           <View>
-            <TitleButton title="Most Favourites" />
+            <TitleButton
+              title="Most Favourites"
+              onPress={() => navigation.navigate('FavouritesAllScreen')}
+            />
           </View>
           {isLoading ? (
             <Shimmer>

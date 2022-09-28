@@ -16,6 +16,8 @@ import images from '../resource/images';
 import {Image} from 'react-native';
 import {gray_primary} from '../resource/colors';
 import DetailBook from '../screens/DetailBook/DetailBook';
+import ForYouAll from '../screens/DetailScreen/ForYouAll';
+import FavouritesAll from '../screens/DetailScreen/FavouritesAll';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -103,7 +105,7 @@ export default function App() {
         screenOptions={{
           headerShown: false,
         }}>
-        {/* <Stack.Screen name="LandingPage" component={LandingPage} /> */}
+        <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen
           options={{
             headerShown: true,
@@ -131,6 +133,32 @@ export default function App() {
           component={Register}
         />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen
+          name="ForYouScreen"
+          options={{
+            headerShown: true,
+            title: 'For You',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontFamily: FONT_PRIMARY_BOLD,
+              fontSize: 17,
+            },
+          }}
+          component={ForYouAll}
+        />
+        <Stack.Screen
+          name="favouritesAllScreen"
+          options={{
+            headerShown: true,
+            title: 'Most Favourites',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontFamily: FONT_PRIMARY_BOLD,
+              fontSize: 17,
+            },
+          }}
+          component={FavouritesAll}
+        />
         <Stack.Screen name="Homepage" component={BottomTab} />
         <Stack.Screen name="HomeLanding" component={HomeLanding} />
         <Stack.Screen

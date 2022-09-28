@@ -16,7 +16,7 @@ import ButtonPrimary from '../../components/Button/ButtonPrimary';
 const Profile = () => {
   const tailwind = useTailwind();
   return (
-    <View style={tailwind('flex-1 bg-white p-5')}>
+    <View style={tailwind('flex-1 bg-white p-5 mt-5')}>
       <ScrollView style={tailwind('')} showsVerticalScrollIndicator={false}>
         <View style={tailwind('items-center flex m-5 ')}>
           <View style={tailwind('mb-2')}>

@@ -24,7 +24,7 @@ import images from '../../resource/images';
 const Login = ({navigation}) => {
   const tailwind = useTailwind();
   return (
-    <SafeAreaView style={tailwind('flex-1 bg-white pb-10')}>
+    <SafeAreaView style={tailwind('flex-1 bg-white ')}>
       {/* <HeaderBack title={'Sign In'} onPress={() => navigation.goBack()} /> */}
       <ScrollView style={tailwind('px-5')} showsVerticalScrollIndicator={false}>
         <View style={tailwind('self-center')}>
@@ -80,7 +80,7 @@ export default Login;
 const styles = StyleSheet.create({
   imageLogin: {
     width: widthPercentageToDP(100),
-    height: heightPercentageToDP(35),
+    height: heightPercentageToDP(30),
     margin: 4,
     resizeMode: 'contain',
   },

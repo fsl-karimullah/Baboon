@@ -29,6 +29,7 @@ const InputCustom = ({
   isError = false,
   errorMessage,
   keyboardType,
+  autoCapitalize,
 }) => {
   const tailwind = useTailwind();
   return (
@@ -44,6 +45,7 @@ const InputCustom = ({
             placeholder={placeholder}
             keyboardType={keyboardType}
             secureTextEntry={isSecureTextEntry}
+            autoCapitalize={autoCapitalize}
           />
           {isIconRight ? (
             <TouchableOpacity
