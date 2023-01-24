@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP(6),
     height: heightPercentageToDP(3),
     marginRight: 5,
+    resizeMode: 'contain',
   },
   textTitle2: {
     fontFamily: FONT_PRIMARY_BOLD,

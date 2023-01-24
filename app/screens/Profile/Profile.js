@@ -65,6 +65,7 @@ const Profile = () => {
             setelah itu klik save untuk mengedit data profile anda
           </Text>
         </View>
+
         <ButtonPrimary title="Save" />
       </ScrollView>
     </View>
