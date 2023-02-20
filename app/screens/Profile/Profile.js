@@ -13,8 +13,10 @@ import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
 import {black} from '../../resource/colors';
 import InputCustom from '../../components/InputCustom';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
+import {useState} from 'react';
 const Profile = () => {
   const tailwind = useTailwind();
+  const [isSubscribe, setisSubscribe] = useState(true);
   return (
     <View style={tailwind('flex-1 bg-white p-5 mt-5')}>
       <ScrollView style={tailwind('')} showsVerticalScrollIndicator={false}>
@@ -28,12 +30,14 @@ const Profile = () => {
             <Text style={[tailwind(''), styles.textTitle]}>
               Amir Faisal Karimullah
             </Text>
-            <View style={tailwind('self-center')}>
-              <Image
-                source={images.logoSecond}
-                style={[tailwind('self-center'), styles.imageLogoSubs]}
-              />
-            </View>
+            {isSubscribe ? (
+              <View style={tailwind('self-center')}>
+                <Image
+                  source={images.logoSecond}
+                  style={[tailwind('self-center'), styles.imageLogoSubs]}
+                />
+              </View>
+            ) : null}
           </View>
           <Text style={[tailwind(), styles.text]}>faisalbic123@gmail.com</Text>
         </View>
@@ -48,6 +52,8 @@ const Profile = () => {
           value={'faisalbic123'}
           isSecureTextEntry={true}
           placeholder={'Password'}
+          isIconRight={true}
+          imageIconRight={images.loupeGray}
         />
         <InputCustom
           title="No phone"

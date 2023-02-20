@@ -65,37 +65,37 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
     {
       id: 1,
       title: 'Fiksi',
-      navigationTo: 'test',
+      filterTo: 'fiksi',
     },
     {
       id: 2,
       title: 'Aksi',
-      navigationTo: 'test',
+      filterTo: 'aksi',
     },
     {
       id: 3,
       title: 'Cerita',
-      navigationTo: 'test',
+      filterTo: 'cerita',
     },
     {
       id: 4,
       title: 'Dongeng',
-      navigationTo: 'test',
+      filterTo: 'dongeng',
     },
     {
       id: 5,
       title: 'Ajaran',
-      navigationTo: 'test',
+      filterTo: 'ajaran',
     },
     {
       id: 6,
       title: 'Proposal',
-      navigationTo: 'test',
+      filterTo: 'proposal',
     },
     {
       id: 7,
       title: 'Skripsi',
-      navigationTo: 'test',
+      filterTo: 'skripsi',
     },
   ]);
   return (
