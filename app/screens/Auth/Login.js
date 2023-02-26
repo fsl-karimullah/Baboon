@@ -21,8 +21,40 @@ import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
 import HeaderBack from '../../components/Header/HeaderBack';
 import images from '../../resource/images';
+import axios from 'axios';
+import {endpoint} from '../../api/apiService';
+import {showErrorToast, showSuccessToast} from '../../resource/Helper';
+import {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = ({navigation}) => {
   const tailwind = useTailwind();
+  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+  const [password, setPassword] = useState('');
+  const [Email, setEmail] = useState('');
+  const userLogin = async () => {
+    if (Email === '' || password === '') {
+      showErrorToast('Semua Data Wajib Di Isi !');
+    } else if (reg.test(Email) === false) {
+      showErrorToast('Mohon Masukkan Email Yang Valid !');
+    } else {
+      axios
+        .post(endpoint.loginUser, {
+          email: Email,
+          // instance: instance,
+          password: password,
+        })
+        .then(async function (response) {
+          console.log('LOGIN RESPONSE', response.data.data.token);
+          await AsyncStorage.setItem('@token', response.data.data.token);
+          showSuccessToast('Login Berhasil');
+          navigation.navigate('Homepage');
+        })
+        .catch(function (error) {
+          console.log(error.request._response);
+          showErrorToast('Email atau Password Tidak Sesuai');
+        });
+    }
+  };
   return (
     <SafeAreaView style={tailwind('flex-1 bg-white ')}>
       {/* <HeaderBack title={'Sign In'} onPress={() => navigation.goBack()} /> */}
@@ -39,10 +71,17 @@ const Login = ({navigation}) => {
             <View>
               <Text style={[tailwind('my-5'), styles.textTitle]}>Sign In</Text>
             </View>
-            <InputCustom title="Email" placeholder={'Email'} />
+            <InputCustom
+              title="Email"
+              placeholder={'Email'}
+              value={Email}
+              onchangeText={Email => setEmail(Email)}
+            />
             <InputCustom
               title="Password"
               isSecureTextEntry
+              value={password}
+              onchangeText={text => setPassword(text)}
               placeholder={'Password'}
             />
             <View>
@@ -54,10 +93,7 @@ const Login = ({navigation}) => {
           </View>
 
           <View>
-            <ButtonPrimary
-              title="Sign In"
-              onPress={() => navigation.navigate('Homepage')}
-            />
+            <ButtonPrimary title="Sign In" onPress={userLogin} />
             <View style={tailwind('self-center flex-row')}>
               <Text style={[tailwind('my-5'), styles.text]}>
                 Belum memiliki akun ?{' '}

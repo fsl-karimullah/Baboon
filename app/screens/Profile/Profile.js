@@ -14,6 +14,7 @@ import {black} from '../../resource/colors';
 import InputCustom from '../../components/InputCustom';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
 import {useState} from 'react';
+import {widthPercentageToDP} from 'react-native-responsive-screen';
 const Profile = () => {
   const tailwind = useTailwind();
   const [isSubscribe, setisSubscribe] = useState(true);
@@ -72,7 +73,19 @@ const Profile = () => {
           </Text>
         </View>
 
-        <ButtonPrimary title="Save" />
+        <View style={tailwind('my-2 mx-2')}>
+          <ButtonPrimary title="Save" />
+        </View>
+
+        <View style={tailwind('mt-2 mx-2')}>
+          <ButtonPrimary title="Berlangganan" />
+        </View>
+        <View style={tailwind('my-5')}>
+          <Text style={styles.text}>
+            Berlangganan untuk mendapatkan akses penuh ketika membaca bugu
+            digital.
+          </Text>
+        </View>
       </ScrollView>
     </View>
   );
@@ -86,12 +99,12 @@ const styles = StyleSheet.create({
     height: 60,
   },
   textTitle: {
-    fontSize: 16,
+    fontSize: widthPercentageToDP(4),
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
   },
   text: {
-    fontSize: 13,
+    fontSize: widthPercentageToDP(3),
     fontFamily: FONT_PRIMARY_REGULAR,
   },
   imageLogoSubs: {

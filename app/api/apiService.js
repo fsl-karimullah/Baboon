@@ -1,8 +1,7 @@
-const genymotionHttp = 'http://10.0.3.2/api';
+const url = 'http://10.0.2.2:8000/api';
 
 export const endpoint = {
-  getBook:
-    'https://www.googleapis.com/books/v1/volumes?q=intitle:laskar+pelangi',
-  registerUser: `${genymotionHttp}/register`,
-  loginUser: `${genymotionHttp}/login`,
+  getBook: `${url}/books`,
+  registerUser: `${url}/register`,
+  loginUser: `${url}/login`,
 };

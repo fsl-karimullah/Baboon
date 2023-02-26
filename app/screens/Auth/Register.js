@@ -23,56 +23,45 @@ import HeaderBack from '../../components/Header/HeaderBack';
 import images from '../../resource/images';
 import {endpoint} from '../../api/apiService';
 import {connect} from 'react-redux';
+import axios from 'axios';
+import {showErrorToast, showSuccessToast} from '../../resource/Helper';
 const Register = ({navigation, saveUserData}) => {
   const tailwind = useTailwind();
   const [Name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [Email, setEmail] = useState('');
   const [ConfirmPassword, setConfirmPassword] = useState('');
-
+  const [instance, setInstance] = useState('');
+  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
   const userRegister = async () => {
-    try {
-      // var details = {
-      //   name: Name,
-      //   email: Email,
-      //   password: password,
-      //   password_confirmation: ConfirmPassword,
-      // };
-
-      // var formBody = [];
-      // for (var property in details) {
-      //   var encodedKey = encodeURIComponent(property);
-      //   var encodedValue = encodeURIComponent(details[property]);
-      //   formBody.push(encodedKey + '=' + encodedValue);
-      // }
-      // formBody = formBody.join('&');
-
-      // const response = await fetch(endpoint.registerUser, {
-      //   method: 'POST',
-      //   headers: {
-      //     Accept: 'application/json',
-      //     'Content-Type': 'application/x-www-form-urlencoded',
-      //   },
-      //   body: formBody,
-      // });
-      const response = await fetch(endpoint.registerUser, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
+    if (
+      Name === '' ||
+      password === '' ||
+      Email === '' ||
+      ConfirmPassword === ''
+    ) {
+      showErrorToast('Semua Data Wajib Di Isi !');
+    } else if (reg.test(Email) === false) {
+      showErrorToast('Mohon Masukkan Email Yang Valid !');
+    } else {
+      axios
+        .post(endpoint.registerUser, {
           name: Name,
           email: Email,
+          // instance: instance,
           password: password,
           password_confirmation: ConfirmPassword,
-        }).toString(),
-      });
+        })
+        .then(function (response) {
+          console.log(response);
 
-      console.log(response);
-      // saveUserData(data)
-    } catch (error) {
-      console.log(error.message);
+          showSuccessToast('Register Berhasil');
+          navigation.navigate('Login');
+        })
+        .catch(function (error) {
+          console.log(error.request._response);
+          showErrorToast(error.request._response);
+        });
     }
   };
 
@@ -96,28 +85,34 @@ const Register = ({navigation, saveUserData}) => {
               title="Name"
               placeholder={'Name'}
               value={Name}
-              onchangeText={setName}
+              onchangeText={Name => setName(Name)}
             />
-            {/* <InputCustom title="University" placeholder={'University'} /> */}
+            {/* <InputCustom
+              title="Instansi"
+              placeholder={'Contoh : Politeknik Negeri Jember'}
+              value={instance}
+              onchangeText={instance => setInstance(instance)}
+            /> */}
+
             <InputCustom
               title="Email"
               placeholder={'Email'}
               value={Email}
-              onchangeText={setEmail}
+              onchangeText={Email => setEmail(Email)}
             />
             <InputCustom
               title="Password"
               isSecureTextEntry
               placeholder={'Password'}
               value={password}
-              onchangeText={setPassword}
+              onchangeText={text => setPassword(text)}
             />
             <InputCustom
               title="Confirm Password"
               isSecureTextEntry
               placeholder={'Confirm Password'}
               value={ConfirmPassword}
-              onchangeText={setConfirmPassword}
+              onchangeText={text => setConfirmPassword(text)}
             />
             <View>
               <Text style={[tailwind('my-5'), styles.text]}>
@@ -127,7 +122,7 @@ const Register = ({navigation, saveUserData}) => {
             </View>
           </View>
           <View style={tailwind('mx-10 my-5')}>
-            <ButtonPrimary onPress={() => userRegister()} title="Sign Up" />
+            <ButtonPrimary onPress={userRegister} title="Sign Up" />
           </View>
         </KeyboardAvoidingView>
       </ScrollView>

@@ -80,6 +80,7 @@ const ForYouAll = ({navigation, bookData}) => {
             onRefresh={onRefresh}
             refreshing={refreshing}
             data={bookData.data}
+            onEndReachedThreshold={0.2}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item, index}) => (
               <CardBook

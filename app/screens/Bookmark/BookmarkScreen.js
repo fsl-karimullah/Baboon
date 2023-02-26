@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
   textTitle: {
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
-    fontSize: 16,
+    fontSize: widthPercentageToDP(4),
   },
   textAuthor: {
     fontFamily: FONT_PRIMARY_REGULAR,
-    fontSize: 13,
+    fontSize: widthPercentageToDP(3.5),
   },
 });

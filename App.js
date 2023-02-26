@@ -5,6 +5,7 @@ import {TailwindProvider} from 'tailwind-rn';
 import utilities from './tailwind.json';
 import store from './app/redux/configureStore';
 import {Provider} from 'react-redux';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         />
         <Routes />
       </TailwindProvider>
+      <Toast />
     </Provider>
   );
 };

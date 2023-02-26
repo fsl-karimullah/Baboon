@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
   textTitle: {
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
-    fontSize: 13,
+    fontSize: widthPercentageToDP(4),
     width: widthPercentageToDP(50),
   },
   textAuthor: {
     fontFamily: FONT_PRIMARY_REGULAR,
-    fontSize: 10,
+    fontSize: widthPercentageToDP(3),
     marginTop: 4,
   },
   imageIconPdf: {
@@ -72,6 +72,6 @@ const styles = StyleSheet.create({
   textTitle2: {
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
-    fontSize: 11,
+    fontSize: widthPercentageToDP(3.5),
   },
 });

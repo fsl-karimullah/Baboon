@@ -7,7 +7,13 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
-import {black, gray, gray_100, gray_primary} from '../../resource/colors';
+import {
+  black,
+  gray,
+  gray_100,
+  gray_primary,
+  white,
+} from '../../resource/colors';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
 const DetailBook = ({route, navigation}) => {
   const tailwind = useTailwind();
@@ -58,6 +64,15 @@ const DetailBook = ({route, navigation}) => {
           </View>
         </View>
         <View style={tailwind('m-5')}>
+          <View style={tailwind('my-4')}>
+            <Text
+              style={[
+                tailwind('text-center p-3 bg-red-300 text-white rounded'),
+                styles.textWarning,
+              ]}>
+              Anda belum berlangganan
+            </Text>
+          </View>
           <View style={tailwind('my-4')}>
             <Text style={[tailwind(''), styles.textTitle]}>Tentang Author</Text>
             <Text style={[tailwind(), styles.textDesc]}>
@@ -123,20 +138,25 @@ const styles = StyleSheet.create({
   textTitle: {
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
-    fontSize: 16,
+    fontSize: widthPercentageToDP(4),
+  },
+  textWarning: {
+    fontFamily: FONT_PRIMARY_BOLD,
+    color: white,
+    fontSize: widthPercentageToDP(3),
   },
   textTitle2: {
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
-    fontSize: 14,
+    fontSize: widthPercentageToDP(4),
   },
   textAuthor: {
     fontFamily: FONT_PRIMARY_REGULAR,
-    fontSize: 13,
+    fontSize: widthPercentageToDP(2.5),
   },
   textDesc: {
     fontFamily: FONT_PRIMARY_REGULAR,
-    fontSize: 13,
+    fontSize: widthPercentageToDP(2.5),
     textAlign: 'justify',
   },
   containerDetail: {
