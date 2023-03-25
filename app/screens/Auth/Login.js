@@ -26,12 +26,18 @@ import {endpoint} from '../../api/apiService';
 import {showErrorToast, showSuccessToast} from '../../resource/Helper';
 import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const Login = ({navigation}) => {
+import {
+  resetUserData,
+  saveUserData,
+} from '../../redux/actions/userRegisterAction';
+import {connect} from 'react-redux';
+const Login = ({navigation, saveUserData}) => {
   const tailwind = useTailwind();
   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
   const [password, setPassword] = useState('');
   const [Email, setEmail] = useState('');
   const userLogin = async () => {
+    resetUserData();
     if (Email === '' || password === '') {
       showErrorToast('Semua Data Wajib Di Isi !');
     } else if (reg.test(Email) === false) {
@@ -44,9 +50,15 @@ const Login = ({navigation}) => {
           password: password,
         })
         .then(async function (response) {
-          console.log('LOGIN RESPONSE', response.data.data.token);
+          console.log('LOGIN RESPONSE', response.data.data);
+          saveUserData({
+            name: response.data.data.name,
+            email: response.data.data.email,
+          });
           await AsyncStorage.setItem('@token', response.data.data.token);
           showSuccessToast('Login Berhasil');
+          setEmail('');
+          setPassword('');
           navigation.navigate('Homepage');
         })
         .catch(function (error) {
@@ -111,7 +123,13 @@ const Login = ({navigation}) => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = {
+  saveUserData,
+};
+
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   imageLogin: {

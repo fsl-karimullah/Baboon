@@ -53,8 +53,8 @@ const Register = ({navigation, saveUserData}) => {
           password_confirmation: ConfirmPassword,
         })
         .then(function (response) {
-          console.log(response);
-
+          console.log(response.data);
+          saveUserData(response.data);
           showSuccessToast('Register Berhasil');
           navigation.navigate('Login');
         })
@@ -134,11 +134,7 @@ const mapDispatchToProps = {
   saveUserData,
 };
 
-const mapStateToProps = state => {
-  return {
-    bookData: state.bookData,
-  };
-};
+const mapStateToProps = state => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(Register);
 
 const styles = StyleSheet.create({

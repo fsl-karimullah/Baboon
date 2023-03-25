@@ -15,9 +15,18 @@ import InputCustom from '../../components/InputCustom';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
 import {useState} from 'react';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
-const Profile = () => {
+import {connect} from 'react-redux';
+import {useEffect} from 'react';
+
+const Profile = ({userData}) => {
   const tailwind = useTailwind();
   const [isSubscribe, setisSubscribe] = useState(true);
+  useEffect(() => {
+    console.log('====================================');
+    console.log(userData);
+    console.log('====================================');
+  }, []);
+
   return (
     <View style={tailwind('flex-1 bg-white p-5 mt-5')}>
       <ScrollView style={tailwind('')} showsVerticalScrollIndicator={false}>
@@ -29,7 +38,7 @@ const Profile = () => {
           </View>
           <View style={tailwind('flex-row')}>
             <Text style={[tailwind(''), styles.textTitle]}>
-              Amir Faisal Karimullah
+              {userData.name}
             </Text>
             {isSubscribe ? (
               <View style={tailwind('self-center')}>
@@ -40,29 +49,29 @@ const Profile = () => {
               </View>
             ) : null}
           </View>
-          <Text style={[tailwind(), styles.text]}>faisalbic123@gmail.com</Text>
+          <Text style={[tailwind(), styles.text]}>{userData.email}</Text>
         </View>
 
         <InputCustom
           title="Email"
-          value={'faisalbic123@gmail.com'}
+          value={userData.email}
           placeholder={'Email'}
         />
-        <InputCustom
+        {/* <InputCustom
           title="Password"
-          value={'faisalbic123'}
+          value={user}
           isSecureTextEntry={true}
           placeholder={'Password'}
           isIconRight={true}
           imageIconRight={images.loupeGray}
-        />
+        /> */}
         <InputCustom
           title="No phone"
           value={'087826563459'}
           placeholder={'No Phone'}
         />
         <InputCustom
-          title="Instance"
+          title="Instance (Asal Kampus)"
           value={'Politeknik Negeri Jember'}
           placeholder={'Instance'}
         />
@@ -82,7 +91,7 @@ const Profile = () => {
         </View>
         <View style={tailwind('my-5')}>
           <Text style={styles.text}>
-            Berlangganan untuk mendapatkan akses penuh ketika membaca bugu
+            Berlangganan untuk mendapatkan akses penuh ketika membaca buku
             digital.
           </Text>
         </View>
@@ -91,7 +100,14 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const mapDispatchToProps = {};
+
+const mapStateToProps = state => {
+  return {
+    userData: state.userData.data,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
   userAvatar: {

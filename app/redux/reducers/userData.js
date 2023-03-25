@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
         ...state,
         data: {},
       };
-    case 'STORING_USERDATA':
+    case 'STORING_USER_DATA':
       return {
         ...state,
         data: {

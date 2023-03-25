@@ -24,44 +24,54 @@ import {saveBookData, saveBookDetail} from '../../redux/actions/getBookAction';
 import Shimmer from 'react-native-shimmer';
 import Card from '../../components/card/Card';
 import TitleButton from '../../components/Button/TitleButton';
+import axios from 'axios';
+import {saveUserData} from '../../redux/actions/userRegisterAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 
-const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
+const Homepage = ({
+  navigation,
+  saveBookData,
+  saveBookDetail,
+  bookData,
+  userData,
+  saveUserData,
+}) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [numColumn, setNumColumn] = useState(2);
   const tailwind = useTailwind();
-  const [Data, setData] = useState();
+  useEffect(() => {
+    getData();
+    console.log('TEST BOOK DATA', bookData.data);
+  }, []);
   const getData = async () => {
-    try {
-      setisLoading(true);
-      const response = await fetch(endpoint.getBook);
-      const data = await response.json();
-      // console.log(data.items[0].volumeInfo.title);
-      // console.log(data.items[0].volumeInfo.authors[0]);
-      // console.log(data.items[0].volumeInfo.description);
-      // console.log(data.items[0].volumeInfo.imageLinks.thumbnail);
-      saveBookData(data.items);
-      console.log(
-        'BOOK DATA FROM STATE',
-        bookData.data[0].volumeInfo.imageLinks.thumbnail,
-      );
-      setisLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+    setisLoading(true);
+    const token = await AsyncStorage.getItem('@token');
+
+    await axios
+      .get(endpoint.getBook, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      })
+      .then(function (response) {
+        saveBookData(response.data);
+        setisLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     getData();
     wait(2000).then(() => setRefreshing(false));
   }, []);
-  useEffect(() => {
-    getData();
-  }, []);
+
   const [ListData, setListData] = useState([
     {
       id: 1,
@@ -112,7 +122,7 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
         <View style={tailwind('m-5')}>
           <View>
             <Text style={[tailwind(''), styles.text]}>
-              Welcome Back, John Doe !
+              Welcome Back, {userData.name} !
             </Text>
             <Text style={[tailwind(''), styles.textTitle]}>
               What do you want to read today?
@@ -187,20 +197,13 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
                   <View style={tailwind('flex-1 flex-row justify-evenly')}>
                     <Card
                       customStyleContainer={tailwind('my-3 ')}
-                      titleBook={item.volumeInfo.title || 'No Title'}
+                      titleBook={item.title || 'No Title'}
                       onPress={() =>
                         navigation.navigate('DetailBook', {
-                          uri: item.volumeInfo.previewLink,
-                          title: item.volumeInfo.title,
-                          author: item.volumeInfo.authors,
-                          img: 'https://picsum.photos/200',
+                          id: item.id,
                         })
                       }
-                      author={
-                        item.volumeInfo.authors
-                          ? item.volumeInfo.authors[0]
-                          : 'No Author'
-                      }
+                      author={item.authors ? item.authors[0] : 'No Author'}
                       imageSrc={
                         {
                           uri: 'https://picsum.photos/200',
@@ -219,13 +222,14 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
 };
 
 const mapDispatchToProps = {
+  saveUserData,
   saveBookData,
-  saveBookDetail,
 };
 
 const mapStateToProps = state => {
   return {
-    bookData: state.bookData,
+    bookData: state.bookData.data,
+    userData: state.userData.data,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
