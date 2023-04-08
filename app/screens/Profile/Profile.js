@@ -13,10 +13,22 @@ import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
 import {black} from '../../resource/colors';
 import InputCustom from '../../components/InputCustom';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
-const Profile = () => {
+import {useState} from 'react';
+import {widthPercentageToDP} from 'react-native-responsive-screen';
+import {connect} from 'react-redux';
+import {useEffect} from 'react';
+
+const Profile = ({userData}) => {
   const tailwind = useTailwind();
+  const [isSubscribe, setisSubscribe] = useState(true);
+  useEffect(() => {
+    console.log('====================================');
+    console.log(userData);
+    console.log('====================================');
+  }, []);
+
   return (
-    <View style={tailwind('flex-1 bg-white p-5')}>
+    <View style={tailwind('flex-1 bg-white p-5 mt-5')}>
       <ScrollView style={tailwind('')} showsVerticalScrollIndicator={false}>
         <View style={tailwind('items-center flex m-5 ')}>
           <View style={tailwind('mb-2')}>
@@ -26,36 +38,40 @@ const Profile = () => {
           </View>
           <View style={tailwind('flex-row')}>
             <Text style={[tailwind(''), styles.textTitle]}>
-              Amir Faisal Karimullah
+              {userData.name}
             </Text>
-            <View style={tailwind('self-center')}>
-              <Image
-                source={images.logoSecond}
-                style={[tailwind('self-center'), styles.imageLogoSubs]}
-              />
-            </View>
+            {isSubscribe ? (
+              <View style={tailwind('self-center')}>
+                <Image
+                  source={images.logoSecond}
+                  style={[tailwind('self-center'), styles.imageLogoSubs]}
+                />
+              </View>
+            ) : null}
           </View>
-          <Text style={[tailwind(), styles.text]}>faisalbic123@gmail.com</Text>
+          <Text style={[tailwind(), styles.text]}>{userData.email}</Text>
         </View>
 
         <InputCustom
           title="Email"
-          value={'faisalbic123@gmail.com'}
+          value={userData.email}
           placeholder={'Email'}
         />
-        <InputCustom
+        {/* <InputCustom
           title="Password"
-          value={'faisalbic123'}
+          value={user}
           isSecureTextEntry={true}
           placeholder={'Password'}
-        />
+          isIconRight={true}
+          imageIconRight={images.loupeGray}
+        /> */}
         <InputCustom
           title="No phone"
           value={'087826563459'}
           placeholder={'No Phone'}
         />
         <InputCustom
-          title="Instance"
+          title="Instance (Asal Kampus)"
           value={'Politeknik Negeri Jember'}
           placeholder={'Instance'}
         />
@@ -65,13 +81,33 @@ const Profile = () => {
             setelah itu klik save untuk mengedit data profile anda
           </Text>
         </View>
-        <ButtonPrimary title="Save" />
+
+        <View style={tailwind('my-2 mx-2')}>
+          <ButtonPrimary title="Save" />
+        </View>
+
+        <View style={tailwind('mt-2 mx-2')}>
+          <ButtonPrimary title="Berlangganan" />
+        </View>
+        <View style={tailwind('my-5')}>
+          <Text style={styles.text}>
+            Berlangganan untuk mendapatkan akses penuh ketika membaca buku
+            digital.
+          </Text>
+        </View>
       </ScrollView>
     </View>
   );
 };
 
-export default Profile;
+const mapDispatchToProps = {};
+
+const mapStateToProps = state => {
+  return {
+    userData: state.userData.data,
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
   userAvatar: {
@@ -79,12 +115,12 @@ const styles = StyleSheet.create({
     height: 60,
   },
   textTitle: {
-    fontSize: 16,
+    fontSize: widthPercentageToDP(4),
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
   },
   text: {
-    fontSize: 13,
+    fontSize: widthPercentageToDP(3),
     fontFamily: FONT_PRIMARY_REGULAR,
   },
   imageLogoSubs: {

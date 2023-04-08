@@ -197,6 +197,7 @@ export const black = '#000000';
 export const white = '#FFFFFF';
 export const blue_primary = '#00B0FF';
 export const gray_primary = '#808080';
+export const gray_100 = '#C8C8C8';
 
 export default {
   gray,

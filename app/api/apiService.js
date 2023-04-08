@@ -1,4 +1,8 @@
+const url = 'http://127.0.0.1:8000/api';
 export const endpoint = {
-  getBook:
-    'https://www.googleapis.com/books/v1/volumes?q=intitle:laskar+pelangi',
+  getBook: `${url}/books`,
+  // getBookDetail: async id => `${url}/books/${id}`,
+  registerUser: `${url}/register`,
+  loginUser: `${url}/login`,
 };
+ 

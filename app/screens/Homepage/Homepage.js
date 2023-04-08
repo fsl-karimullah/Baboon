@@ -24,79 +24,89 @@ import {saveBookData, saveBookDetail} from '../../redux/actions/getBookAction';
 import Shimmer from 'react-native-shimmer';
 import Card from '../../components/card/Card';
 import TitleButton from '../../components/Button/TitleButton';
+import axios from 'axios';
+import {saveUserData} from '../../redux/actions/userRegisterAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
-//jumlah halaman, tahun terbit,
-const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
-  const [refreshing, setRefreshing] = React.useState(false);
 
+const Homepage = ({
+  navigation,
+  saveBookData,
+  saveBookDetail,
+  bookData,
+  userData,
+  saveUserData,
+}) => {
+  const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setisLoading] = useState(false);
+  const [numColumn, setNumColumn] = useState(2);
   const tailwind = useTailwind();
-  const [Data, setData] = useState();
+  useEffect(() => {
+    getData();
+    console.log('TEST BOOK DATA', bookData.data);
+  }, []);
   const getData = async () => {
-    try {
-      setisLoading(true);
-      const response = await fetch(endpoint.getBook);
-      const data = await response.json();
-      // console.log(data.items[0].volumeInfo.title);
-      // console.log(data.items[0].volumeInfo.authors[0]);
-      // console.log(data.items[0].volumeInfo.description);
-      // console.log(data.items[0].volumeInfo.imageLinks.thumbnail);
-      saveBookData(data.items);
-      console.log(
-        'BOOK DATA FROM STATE',
-        bookData.data[0].volumeInfo.imageLinks.thumbnail,
-      );
-      setisLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+    setisLoading(true);
+    const token = await AsyncStorage.getItem('@token');
+
+    await axios
+      .get(endpoint.getBook, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      })
+      .then(function (response) {
+        saveBookData(response.data);
+        setisLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     getData();
     wait(2000).then(() => setRefreshing(false));
   }, []);
-  useEffect(() => {
-    getData();
-  }, []);
+
   const [ListData, setListData] = useState([
     {
       id: 1,
       title: 'Fiksi',
-      navigationTo: 'test',
+      filterTo: 'fiksi',
     },
     {
       id: 2,
       title: 'Aksi',
-      navigationTo: 'test',
+      filterTo: 'aksi',
     },
     {
       id: 3,
       title: 'Cerita',
-      navigationTo: 'test',
+      filterTo: 'cerita',
     },
     {
       id: 4,
       title: 'Dongeng',
-      navigationTo: 'test',
+      filterTo: 'dongeng',
     },
     {
       id: 5,
       title: 'Ajaran',
-      navigationTo: 'test',
+      filterTo: 'ajaran',
     },
     {
       id: 6,
       title: 'Proposal',
-      navigationTo: 'test',
+      filterTo: 'proposal',
     },
     {
       id: 7,
       title: 'Skripsi',
-      navigationTo: 'test',
+      filterTo: 'skripsi',
     },
   ]);
   return (
@@ -112,7 +122,7 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
         <View style={tailwind('m-5')}>
           <View>
             <Text style={[tailwind(''), styles.text]}>
-              Welcome Back, John Doe !
+              Welcome Back, {userData.name} !
             </Text>
             <Text style={[tailwind(''), styles.textTitle]}>
               What do you want to read today?
@@ -147,7 +157,7 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
               renderItem={({item, index}) => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate(item.navigationTo)}
-                  style={[tailwind('flex flex-row flex-wrap mr-2 mb-2')]}>
+                  style={[tailwind('flex flex-row flex-wrap mr-5 mb-2')]}>
                   <View>
                     <Text style={styles.text}>{item.title}</Text>
                   </View>
@@ -156,15 +166,17 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
             />
           </View>
           <View>
-            <TitleButton title="For You" />
+            <TitleButton
+              title="For You"
+              onPress={() => navigation.navigate('ForYouScreen')}
+            />
           </View>
           {isLoading ? (
             <Shimmer>
               <View style={tailwind('my-5')}>
                 <FlatList
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
                   data={bookData.data}
+                  numColumns={numColumn}
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({item, index}) => (
                     <Card titleBook={''} author={''} />
@@ -173,85 +185,32 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
               </View>
             </Shimmer>
           ) : (
-            <View style={tailwind('my-5')}>
+            <View style={tailwind('mt-3')}>
               <FlatList
-                horizontal={true}
                 initialNumToRender={10}
-                showsHorizontalScrollIndicator={false}
+                numColumns={numColumn}
+                onRefresh={onRefresh}
+                refreshing={refreshing}
                 data={bookData.data}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => (
-                  <Card
-                    titleBook={item.volumeInfo.title || 'No Title'}
-                    onPress={() =>
-                      navigation.navigate('DetailBook', {
-                        uri: item.volumeInfo.previewLink,
-                        title: item.volumeInfo.title,
-                        author: item.volumeInfo.authors,
-                        img: 'https://picsum.photos/200',
-                      })
-                    }
-                    author={
-                      item.volumeInfo.authors
-                        ? item.volumeInfo.authors[0]
-                        : 'No Author'
-                    }
-                    imageSrc={
-                      {
-                        uri: 'https://picsum.photos/200',
-                      } || images.noImage
-                    }
-                  />
-                )}
-              />
-            </View>
-          )}
-          <View>
-            <TitleButton title="Most Favourites" />
-          </View>
-          {isLoading ? (
-            <Shimmer>
-              <View style={tailwind('my-5')}>
-                <FlatList
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  data={bookData.data}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({item, index}) => (
-                    <Card titleBook={''} author={''} />
-                  )}
-                />
-              </View>
-            </Shimmer>
-          ) : (
-            <View style={tailwind('my-5')}>
-              <FlatList
-                horizontal={true}
-                initialNumToRender={10}
-                showsHorizontalScrollIndicator={false}
-                data={bookData.data}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({item, index}) => (
-                  <Card
-                    titleBook={item.volumeInfo.title || 'No Title'}
-                    onPress={() =>
-                      navigation.navigate('DetailBook', {
-                        uri: item.volumeInfo.previewLink,
-                        title: item.volumeInfo.title,
-                        author: item.volumeInfo.authors,
-                      })
-                    }
-                    author={
-                      item.volumeInfo.authors
-                        ? item.volumeInfo.authors[0]
-                        : 'No Author'
-                    }
-                    imageSrc={
-                      {
-                        uri: 'https://picsum.photos/200/300',
-                      } || images.noImage
-                    }
-                  />
+                  <View style={tailwind('flex-1 flex-row justify-evenly')}>
+                    <Card
+                      customStyleContainer={tailwind('my-3 ')}
+                      titleBook={item.title || 'No Title'}
+                      onPress={() =>
+                        navigation.navigate('DetailBook', {
+                          id: item.id,
+                        })
+                      }
+                      author={item.authors ? item.authors[0] : 'No Author'}
+                      imageSrc={
+                        {
+                          uri: 'https://picsum.photos/200',
+                        } || images.noImage
+                      }
+                    />
+                  </View>
                 )}
               />
             </View>
@@ -263,13 +222,14 @@ const Homepage = ({navigation, saveBookData, saveBookDetail, bookData}) => {
 };
 
 const mapDispatchToProps = {
+  saveUserData,
   saveBookData,
-  saveBookDetail,
 };
 
 const mapStateToProps = state => {
   return {
-    bookData: state.bookData,
+    bookData: state.bookData.data,
+    userData: state.userData.data,
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
@@ -278,17 +238,17 @@ const styles = StyleSheet.create({
   text: {
     color: black,
     fontFamily: FONT_PRIMARY_REGULAR,
-    fontSize: 15,
+    fontSize: widthPercentageToDP(4),
   },
   textTitle: {
     color: black,
     fontFamily: FONT_PRIMARY_BOLD,
-    fontSize: 20,
+    fontSize: widthPercentageToDP(5),
     width: widthPercentageToDP(70),
   },
   textTitleTopCard: {
     color: black,
     fontFamily: FONT_PRIMARY_BOLD,
-    fontSize: 20,
+    fontSize: widthPercentageToDP(4),
   },
 });

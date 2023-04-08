@@ -17,5 +17,6 @@ const images = {
   bookMarkInactive: require('../assets/images/Homepage/bookmark-inactive.png'),
   userInactive: require('../assets/images/Homepage/user-inactive.png'),
   userActive: require('../assets/images/Homepage/user-active.png'),
+  pdfIcon: require('../assets/images/Homepage/pdf-icon.png'),
 };
 export default images;

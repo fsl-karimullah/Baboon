@@ -4,11 +4,15 @@ import images from '../../resource/images';
 import {useTailwind} from 'tailwind-rn';
 import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
 import {black} from '../../resource/colors';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
 
-const Card = ({titleBook, author, imageSrc, onPress}) => {
+const Card = ({titleBook, author, imageSrc, onPress, customStyleContainer}) => {
   const tailwind = useTailwind();
   return (
-    <TouchableOpacity style={tailwind('')} onPress={onPress}>
+    <TouchableOpacity style={customStyleContainer} onPress={onPress}>
       <View style={tailwind('mr-3')}>
         <Image source={imageSrc} style={[tailwind(), styles.imageCard]} />
         <Text
@@ -32,21 +36,21 @@ export default Card;
 
 const styles = StyleSheet.create({
   imageCard: {
-    width: 130,
-    height: 200,
+    width: widthPercentageToDP('40%'),
+    height: heightPercentageToDP('30%'),
     resizeMode: 'contain',
     backgroundColor: '#eee',
     padding: 10,
     borderRadius: 10,
   },
   textTitle: {
-    fontSize: 15,
+    fontSize: widthPercentageToDP(4),
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
-    width: 120,
+    width: widthPercentageToDP('30%'),
   },
   text: {
-    fontSize: 12,
+    fontSize: widthPercentageToDP(3),
     fontFamily: FONT_PRIMARY_REGULAR,
   },
 });
