@@ -45,7 +45,7 @@ const Login = ({navigation, saveUserData}) => {
     } else {
       axios
         .post(endpoint.loginUser, {
-          email: Email,
+          email: Email, 
           // instance: instance,
           password: password,
         })
@@ -63,7 +63,7 @@ const Login = ({navigation, saveUserData}) => {
         })
         .catch(function (error) {
           console.log(error.request._response);
-          showErrorToast('Email atau Password Tidak Sesuai');
+          showErrorToast(error.request._response);
         });
     }
   };

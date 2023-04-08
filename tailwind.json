@@ -219,6 +219,16 @@
 			"borderBottomWidth": 2
 		}
 	},
+	"border-t-0": {
+		"style": {
+			"borderTopWidth": 0
+		}
+	},
+	"border-b-0": {
+		"style": {
+			"borderBottomWidth": 0
+		}
+	},
 	"border-gray-300": {
 		"style": {
 			"--tw-border-opacity": 1,

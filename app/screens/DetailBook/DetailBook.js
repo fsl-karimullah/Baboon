@@ -20,7 +20,7 @@ import {saveBookDetail} from '../../redux/actions/getBookAction';
 import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-const DetailBook = ({route, navigation, saveBookDetail, bookDataDdetail}) => {
+const DetailBook = ({route, navigation, saveBookDetail, bookDataDetail}) => {
   const tailwind = useTailwind();
   const [isLoading, setisLoading] = useState(false);
   const {id} = route.params;
@@ -33,36 +33,42 @@ const DetailBook = ({route, navigation, saveBookDetail, bookDataDdetail}) => {
     const token = await AsyncStorage.getItem('@token');
 
     await axios
-      .get(`http://10.0.2.2:8000/api/books/${id}`, {
+      .get(`http://127.0.0.1:8000/api/books/${id}`, {
         headers: {
           Authorization: 'Bearer ' + token,
         },
       })
       .then(function (response) {
-        console.log('TESTTTTTTT', response);
-        saveBookDetail(response.data);
+        console.log('TESTTTTTTT', response.data.data);
+        saveBookDetail(response.data.data);
         setisLoading(false);
       })
       .catch(function (error) {
         console.log(error);
       });
-  };
+  }; 
   return (
     <View style={tailwind('flex-1 bg-white')}>
       <ScrollView>
         <View style={tailwind('self-center mt-5')}>
           <Image
             source={{
-              uri: bookDataDdetail.data.thumbnail,
+              uri: bookDataDetail.thumbnail,
             }}
             style={styles.imageBook}
           />
           <View style={tailwind('my-3 mx-5')}>
             <Text style={[tailwind('text-center'), styles.textTitle]}>
-              {bookDataDdetail.data.title}
+              {bookDataDetail.title}
+            </Text>
+            <Text style={[tailwind('text-center'), styles.textISBN]}>
+              {bookDataDetail.isbn}
             </Text>
             <Text style={[tailwind('text-center'), styles.textAuthor]}>
-              {bookDataDdetail.data.authors}
+              {bookDataDetail.authors}
+            </Text>
+            <Text style={[tailwind('text-center '), styles.textCategory]}>
+              {bookDataDetail.category}
             </Text>
           </View>
           <View
@@ -72,22 +78,22 @@ const DetailBook = ({route, navigation, saveBookDetail, bookDataDdetail}) => {
             ]}>
             <View>
               <Text style={styles.textTitle2}>Pages</Text>
-              <Text style={[styles.textAuthor, tailwind('text-center pt-2')]}>
-                {bookDataDdetail.data.pageCount}
+              <Text style={[styles.textSubTitle, tailwind('text-center pt-2')]}>
+                {bookDataDetail.pageCount}
               </Text>
             </View>
             <View style={styles.verticleLine}></View>
             <View>
               <Text style={styles.textTitle2}>Published Date</Text>
-              <Text style={[styles.textAuthor, tailwind('text-center pt-2')]}>
-                {bookDataDdetail.data.publishedDate}
+              <Text style={[styles.textSubTitle, tailwind('text-center pt-2')]}>
+                {bookDataDetail.publishedDate}
               </Text>
             </View>
             <View style={styles.verticleLine}></View>
             <View>
-              <Text style={styles.textTitle2}>Language</Text>
-              <Text style={[styles.textAuthor, tailwind('text-center pt-2')]}>
-                Indonesia
+              <Text style={styles.textTitle2}>Publisher</Text>
+              <Text style={[styles.textSubTitle, tailwind('text-center pt-2')]}>
+                {bookDataDetail.publisher} sadsladjasdlasjdh
               </Text>
             </View>
           </View>
@@ -115,7 +121,7 @@ const DetailBook = ({route, navigation, saveBookDetail, bookDataDdetail}) => {
           <View>
             <Text style={[tailwind(''), styles.textTitle]}>Deskripsi Buku</Text>
             <Text style={[tailwind(), styles.textDesc]}>
-              {bookDataDdetail.data.description}
+              {bookDataDetail.description}
             </Text>
           </View>
         </View>
@@ -145,7 +151,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => {
   return {
-    bookDataDdetail: state.bookData.dataDetail,
+    bookDataDetail: state.bookData.dataDetail,
   };
 };
 
@@ -175,13 +181,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   textAuthor: {
-    fontFamily: FONT_PRIMARY_REGULAR,
+    fontFamily: FONT_PRIMARY_BOLD,
+    fontSize: widthPercentageToDP(3),
+  },
+  textISBN: {
+    fontFamily: FONT_PRIMARY_BOLD,
+    fontSize: widthPercentageToDP(3),
+  },
+  textCategory: {
+    fontFamily: FONT_PRIMARY_BOLD,
     fontSize: widthPercentageToDP(3),
   },
   textDesc: {
     fontFamily: FONT_PRIMARY_REGULAR,
     fontSize: widthPercentageToDP(2.5),
     textAlign: 'justify',
+  },
+  textSubTitle: {
+    fontFamily: FONT_PRIMARY_REGULAR,
+    fontSize: widthPercentageToDP(3),
+    textAlign: 'center',
+   
   },
   containerDetail: {
     borderWidth: 1,
