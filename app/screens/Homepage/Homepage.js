@@ -9,6 +9,7 @@ import {
   ImageBackground,
   Linking,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import HeaderHomepage from '../../components/Header/HeaderHomepage';
@@ -43,17 +44,17 @@ const Homepage = ({
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [numColumn, setNumColumn] = useState(2);
+  const [page, setpage] = useState(1)
   const tailwind = useTailwind();
   useEffect(() => {
     getData();
-    console.log('TEST BOOK DATA', bookData.data);
-  }, []);
+  }, [page]);
   const getData = async () => {
     setisLoading(true);
     const token = await AsyncStorage.getItem('@token');
-
+ 
     await axios
-      .get(endpoint.getBook, {
+      .get(endpoint.getMoreBook + page, {
         headers: {
           Authorization: 'Bearer ' + token,
         },
@@ -66,11 +67,22 @@ const Homepage = ({
         console.log(error);
       });
   };
+  const getMoreData = async () => {
+   setpage(page + 1)
+  };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     getData();
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  const bottomLoader = () => {
+    return (
+      <View>
+        <ActivityIndicator size={'large'} color={'#000'} />  
+      </View>
+    )
+  }
 
   const [ListData, setListData] = useState([
     {
@@ -169,6 +181,7 @@ const Homepage = ({
             <TitleButton
               title="For You"
               onPress={() => navigation.navigate('ForYouScreen')}
+              
             />
           </View>
           {isLoading ? (
@@ -189,9 +202,12 @@ const Homepage = ({
               <FlatList
                 initialNumToRender={10}
                 numColumns={numColumn}
+                onEndReachedThreshold={0.2}
+                onEndReached={() => getMoreData}
                 onRefresh={onRefresh}
-                refreshing={refreshing}
+                refreshing={refreshing} 
                 data={bookData.data}
+                ListFooterComponent={bottomLoader}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => (
                   <View style={tailwind('flex-1 flex-row justify-evenly')}>
@@ -199,18 +215,18 @@ const Homepage = ({
                       customStyleContainer={tailwind('my-3 ')}
                       titleBook={item.title || 'No Title'}
                       onPress={() =>
-                        navigation.navigate('DetailBook', {
+                        navigation.navigate('DetailBook', { 
                           id: item.id,
                         })
                       }
                       author={item.authors ? item.authors[0] : 'No Author'}
                       imageSrc={
-                        {
-                          uri: 'https://picsum.photos/200',
-                        } || images.noImage
-                      }
+                        
+                          item.thumbnail === 'http://127.0.0.1:8000/storage/test' || item.thumbnail === '' ? images.noImage : {uri: item.thumbnail}   
+                        
+                      } 
                     />
-                  </View>
+                  </View> 
                 )}
               />
             </View>

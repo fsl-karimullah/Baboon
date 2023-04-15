@@ -63,7 +63,7 @@ const Login = ({navigation, saveUserData}) => {
         })
         .catch(function (error) {
           console.log(error.request._response);
-          showErrorToast(error.request._response);
+          showErrorToast("Mohon cek email dan password anda kembali");
         });
     }
   };

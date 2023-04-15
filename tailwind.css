@@ -162,14 +162,6 @@
   border-bottom-width: 2px
 }
 
-.border-t-0 {
-  border-top-width: 0px
-}
-
-.border-b-0 {
-  border-bottom-width: 0px
-}
-
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity))
