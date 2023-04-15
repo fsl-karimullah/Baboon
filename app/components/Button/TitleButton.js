@@ -12,11 +12,11 @@ const TitleButton = ({title, onPress}) => {
         <View>
           <Text style={styles.textTitleTopCard}>{title}</Text>
         </View>
-        <View style={tailwind('self-center')}>
+        {/* <View style={tailwind('self-center')}>
           <TouchableOpacity onPress={onPress}>
             <Text style={styles.textTitleButton}>See All</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </View>
   );
