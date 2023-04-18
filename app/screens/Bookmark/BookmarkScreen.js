@@ -18,6 +18,7 @@ import CardBookmark from '../../components/card/CardBookmark';
 
 const BookmarkScreen = () => {
   const tailwind = useTailwind();
+  //api/bookmarks
   return (
     <View style={tailwind('flex-1 bg-white')}>
       <ScrollView>

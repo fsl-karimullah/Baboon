@@ -32,6 +32,7 @@ const Register = ({navigation, saveUserData}) => {
   const [Email, setEmail] = useState('');
   const [ConfirmPassword, setConfirmPassword] = useState('');
   const [instance, setInstance] = useState('');
+  const [phoneNum, setphoneNum] = useState()
   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
   const userRegister = async () => {
     if (
@@ -48,7 +49,8 @@ const Register = ({navigation, saveUserData}) => {
         .post(endpoint.registerUser, {
           name: Name,
           email: Email,
-          // instance: instance,
+          instance: instance,
+          phone_number: phoneNum,
           password: password,
           password_confirmation: ConfirmPassword,
         })
@@ -87,19 +89,26 @@ const Register = ({navigation, saveUserData}) => {
               value={Name}
               onchangeText={Name => setName(Name)}
             />
-            {/* <InputCustom
-              title="Instansi"
-              placeholder={'Contoh : Politeknik Negeri Jember'}
-              value={instance}
-              onchangeText={instance => setInstance(instance)}
-            /> */}
-
             <InputCustom
               title="Email"
               placeholder={'Email'}
               value={Email}
               onchangeText={Email => setEmail(Email)}
             />
+            <InputCustom
+              title="Instansi"
+              placeholder={'Contoh : Politeknik Negeri Jember'}
+              value={instance}
+              onchangeText={instance => setInstance(instance)}
+            />
+            <InputCustom
+              title="Nomor Handphone"
+              placeholder={'Contoh : 082318098649'}
+              value={phoneNum}
+              onchangeText={phoneNum => setphoneNum(phoneNum)}
+            />
+
+            
             <InputCustom
               title="Password"
               isSecureTextEntry

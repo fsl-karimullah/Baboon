@@ -54,6 +54,9 @@ const Login = ({navigation, saveUserData}) => {
           saveUserData({
             name: response.data.data.name,
             email: response.data.data.email,
+            phoneNum: response.data.data.phone_number,
+            instance: response.data.data.instance,
+            is_subscribed: response.data.data.is_subscribed,
           });
           await AsyncStorage.setItem('@token', response.data.data.token);
           showSuccessToast('Login Berhasil');

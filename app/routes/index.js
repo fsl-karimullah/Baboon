@@ -18,6 +18,7 @@ import {gray_primary} from '../resource/colors';
 import DetailBook from '../screens/DetailBook/DetailBook';
 import ForYouAll from '../screens/DetailScreen/ForYouAll';
 import FavouritesAll from '../screens/DetailScreen/FavouritesAll';
+import SubscribeScreen from '../screens/Profile/SubscribeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -187,6 +188,20 @@ export default function App() {
           }}
           name="Profile"
           component={Profile}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+
+            title: 'Berlangganan Polije Press',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontFamily: FONT_PRIMARY_BOLD,
+              fontSize: 17,
+            },
+          }}
+          name="SubscribeScreen"
+          component={SubscribeScreen}
         />
         <Stack.Screen
           options={{

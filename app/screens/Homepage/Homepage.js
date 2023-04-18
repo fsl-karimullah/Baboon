@@ -44,11 +44,12 @@ const Homepage = ({
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [numColumn, setNumColumn] = useState(2);
-  const [page, setpage] = useState(1)
+  const [page, setpage] = useState()
   const tailwind = useTailwind();
   useEffect(() => {
+    console.log("THUMB", bookData); 
     getData();
-  }, [page]);
+  }, []);
   const getData = async () => {
     setisLoading(true);
     const token = await AsyncStorage.getItem('@token');
@@ -60,11 +61,11 @@ const Homepage = ({
         },
       })
       .then(function (response) {
-        saveBookData(response.data);
+        saveBookData(response.data); 
         setisLoading(false);
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error); 
       });
   };
   const getMoreData = async () => {
@@ -128,6 +129,7 @@ const Homepage = ({
         onPress={() => navigation.navigate('Profile')}
       />
       <ScrollView
+      
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
@@ -203,11 +205,11 @@ const Homepage = ({
                 initialNumToRender={10}
                 numColumns={numColumn}
                 onEndReachedThreshold={0.2}
-                onEndReached={() => getMoreData}
+                onEndReached={getMoreData}
                 onRefresh={onRefresh}
                 refreshing={refreshing} 
                 data={bookData.data}
-                ListFooterComponent={bottomLoader}
+                // ListFooterComponent={bottomLoader}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item, index}) => (
                   <View style={tailwind('flex-1 flex-row justify-evenly')}>
@@ -225,7 +227,7 @@ const Homepage = ({
                           item.thumbnail === 'http://127.0.0.1:8000/storage/test' || item.thumbnail === '' ? images.noImage : {uri: item.thumbnail}   
                         
                       } 
-                    />
+                    /> 
                   </View> 
                 )}
               />

@@ -18,7 +18,7 @@ import {widthPercentageToDP} from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import {useEffect} from 'react';
 
-const Profile = ({userData}) => {
+const Profile = ({userData, navigation}) => {
   const tailwind = useTailwind();
   const [isSubscribe, setisSubscribe] = useState(true);
   useEffect(() => {
@@ -42,7 +42,7 @@ const Profile = ({userData}) => {
             </Text>
             {isSubscribe ? (
               <View style={tailwind('self-center')}>
-                <Image
+                <Image 
                   source={images.logoSecond}
                   style={[tailwind('self-center'), styles.imageLogoSubs]}
                 />
@@ -54,7 +54,7 @@ const Profile = ({userData}) => {
 
         <InputCustom
           title="Email"
-          value={userData.email}
+          value={userData.email} 
           placeholder={'Email'}
         />
         {/* <InputCustom
@@ -67,14 +67,14 @@ const Profile = ({userData}) => {
         /> */}
         <InputCustom
           title="No phone"
-          value={'087826563459'}
+          value={userData.phoneNum}
           placeholder={'No Phone'}
         />
         <InputCustom
           title="Instance (Asal Kampus)"
-          value={'Politeknik Negeri Jember'}
+          value={userData.instance}
           placeholder={'Instance'}
-        />
+        /> 
         <View style={tailwind('mb-5')}>
           <Text style={styles.text}>
             Anda bisa langsung mengubah atau mengisikan data baru ke dalam form,
@@ -87,7 +87,7 @@ const Profile = ({userData}) => {
         </View>
 
         <View style={tailwind('mt-2 mx-2')}>
-          <ButtonPrimary title="Berlangganan" />
+          <ButtonPrimary title="Berlangganan" onPress={() => navigation.navigate('SubscribeScreen')} />
         </View>
         <View style={tailwind('my-5')}>
           <Text style={styles.text}>
@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: widthPercentageToDP(3),
     fontFamily: FONT_PRIMARY_REGULAR,
+    color:black
   },
   imageLogoSubs: {
     resizeMode: 'contain',
