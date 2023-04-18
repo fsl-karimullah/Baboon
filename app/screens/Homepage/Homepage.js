@@ -55,7 +55,7 @@ const Homepage = ({
     const token = await AsyncStorage.getItem('@token');
  
     await axios
-      .get(endpoint.getMoreBook + page, {
+      .get(endpoint.getMoreBook + '2', {
         headers: {
           Authorization: 'Bearer ' + token,
         },

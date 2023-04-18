@@ -10,6 +10,7 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 const App = () => {
   return (
     <Provider store={store()}>
+      
       <TailwindProvider utilities={utilities}>
         <StatusBar
           barStyle="dark-content"
@@ -19,9 +20,10 @@ const App = () => {
         />
         <Routes />
       </TailwindProvider>
+      
       <Toast />
     </Provider>
-  );
+  ); 
 };
 
 export default App;

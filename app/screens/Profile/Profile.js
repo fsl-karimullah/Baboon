@@ -6,17 +6,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import images from '../../resource/images';
 import {useTailwind} from 'tailwind-rn';
 import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
 import {black} from '../../resource/colors';
 import InputCustom from '../../components/InputCustom';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
-import {useEffect} from 'react';
+import {useEffect} from 'react'; 
+
 
 const Profile = ({userData, navigation}) => {
   const tailwind = useTailwind();
@@ -26,6 +27,10 @@ const Profile = ({userData, navigation}) => {
     console.log(userData);
     console.log('====================================');
   }, []);
+
+
+
+
 
   return (
     <View style={tailwind('flex-1 bg-white p-5 mt-5')}>
@@ -95,6 +100,7 @@ const Profile = ({userData, navigation}) => {
             digital.
           </Text>
         </View>
+     
       </ScrollView>
     </View>
   );

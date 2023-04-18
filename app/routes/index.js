@@ -19,6 +19,7 @@ import DetailBook from '../screens/DetailBook/DetailBook';
 import ForYouAll from '../screens/DetailScreen/ForYouAll';
 import FavouritesAll from '../screens/DetailScreen/FavouritesAll';
 import SubscribeScreen from '../screens/Profile/SubscribeScreen';
+import Pdfscreen from '../screens/WebView/Pdfscreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -192,7 +193,6 @@ export default function App() {
         <Stack.Screen
           options={{
             headerShown: true,
-
             title: 'Berlangganan Polije Press',
             headerTitleAlign: 'center',
             headerTitleStyle: {
@@ -215,6 +215,19 @@ export default function App() {
           }}
           name="WebViewScreen"
           component={WebViewScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            title: 'Read Book',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontFamily: FONT_PRIMARY_BOLD,
+              fontSize: 17,
+            }, 
+          }}
+          name="PdfScreen"
+          component={Pdfscreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

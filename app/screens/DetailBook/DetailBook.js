@@ -1,4 +1,4 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useTailwind } from 'tailwind-rn';
 import HeaderBack from '../../components/Header/HeaderBack';
@@ -15,6 +15,7 @@ import {
   white,
 } from '../../resource/colors';
 
+
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
 import { endpoint } from '../../api/apiService';
 import { saveBookDetail } from '../../redux/actions/getBookAction';
@@ -22,10 +23,13 @@ import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import images from '../../resource/images';
+
+
 const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userData }) => {
   const tailwind = useTailwind();
   const [isLoading, setisLoading] = useState(false);
   const { id } = route.params;
+
   useEffect(() => {
     console.log("+++++++", userData);
     getData(); 
@@ -58,6 +62,8 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
       .post(`http://127.0.0.1:8000/api/books/${id}/bookmark`, {
         headers: {
           Authorization: 'Bearer ' + token,
+          Accept : 'application/json',
+          'Content-Type' : 'application/json',
         },
       })
       .then(function (response) {
@@ -161,16 +167,16 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
         </View>
         <View style={tailwind('mx-4')}>
           <ButtonPrimary
-            onPress={() => navigation.navigate('WebViewScreen', { uri: bookDataDetail.pdf_full })}
+            onPress={() => navigation.navigate('PdfScreen', userData.is_subscribed === false ? { uri: bookDataDetail.pdf_full } : { uri: bookDataDetail.pdf_preview })}
             customStyleContainer={{
-              backgroundColor: black,
-            }}
-            customTextTitle={{ fontSize: 13 }}
+              backgroundColor: black, 
+            }} 
+            customTextTitle={{ fontSize: 13 }} 
             title="Baca Online"
           />
         </View>
       </View>
-
+     
     </View>
   );
 };
@@ -252,4 +258,5 @@ const styles = StyleSheet.create({
     backgroundColor: gray_100,
     alignSelf: 'center',
   },
+
 });
