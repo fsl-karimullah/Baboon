@@ -206,7 +206,7 @@ export default function App() {
         <Stack.Screen
           options={{
             headerShown: true,
-            title: 'Read Book',
+            title: 'Pembayaran',
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontFamily: FONT_PRIMARY_BOLD,
