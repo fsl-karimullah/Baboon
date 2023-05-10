@@ -22,6 +22,14 @@
 			"marginLeft": 20
 		}
 	},
+	"m-4": {
+		"style": {
+			"marginTop": 16,
+			"marginRight": 16,
+			"marginBottom": 16,
+			"marginLeft": 16
+		}
+	},
 	"my-5": {
 		"style": {
 			"marginTop": 20,
@@ -340,6 +348,21 @@
 	"pt-2": {
 		"style": {
 			"paddingTop": 8
+		}
+	},
+	"pb-44": {
+		"style": {
+			"paddingBottom": 176
+		}
+	},
+	"pb-10": {
+		"style": {
+			"paddingBottom": 40
+		}
+	},
+	"pb-16": {
+		"style": {
+			"paddingBottom": 64
 		}
 	},
 	"text-center": {

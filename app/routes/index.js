@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from '../screens/Auth/Login';
@@ -20,11 +20,32 @@ import ForYouAll from '../screens/DetailScreen/ForYouAll';
 import FavouritesAll from '../screens/DetailScreen/FavouritesAll';
 import SubscribeScreen from '../screens/Profile/SubscribeScreen';
 import Pdfscreen from '../screens/WebView/Pdfscreen';
+import ForgotPassword from '../screens/Auth/ForgotPassword';
+import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+const App = ({userData}) => {
+  const [signIn, setsignIn] = useState(false)
+  useEffect(() => {
+    
+    getToken()
+  }, [])
+  
+  const getToken =  async () => {
+    try {
+      const token = await AsyncStorage.getItem('@token')
+      if (token) {
+        setsignIn(true)
+      } else {
+        setsignIn(false)
+      }
+    } catch (error) {
+      console.log(error);
+    } 
+  }
   function BottomTab() {
     return (
       <Tab.Navigator
@@ -103,11 +124,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name="LandingPage" component={LandingPage} />
+
         <Stack.Screen
           options={{
             headerShown: true,
@@ -120,6 +140,20 @@ export default function App() {
           }}
           name="Login"
           component={Login}
+        />
+         <Stack.Screen name="Homepage" component={BottomTab} />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            title: 'Forgot Password',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontFamily: FONT_PRIMARY_BOLD,
+              fontSize: 17,
+            },
+          }}
+          name="ForgotPasswordScreen"
+          component={ForgotPassword}
         />
         <Stack.Screen
           options={{
@@ -161,7 +195,7 @@ export default function App() {
           }}
           component={FavouritesAll}
         />
-        <Stack.Screen name="Homepage" component={BottomTab} />
+       
         <Stack.Screen name="HomeLanding" component={HomeLanding} />
         <Stack.Screen
           name="DetailBook"
@@ -233,3 +267,14 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+
+
+const mapStateToProps = state => {
+  return {
+    
+    userData: state.userData.data,
+    
+  };
+};
+export default connect(mapStateToProps)(App);

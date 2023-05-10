@@ -11,7 +11,7 @@ import React, { useCallback, useMemo } from 'react';
 import images from '../../resource/images';
 import {useTailwind} from 'tailwind-rn';
 import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
-import {black} from '../../resource/colors';
+import {black, blue_primary} from '../../resource/colors';
 import InputCustom from '../../components/InputCustom';
 import ButtonPrimary from '../../components/Button/ButtonPrimary';
 import {useRef, useState} from 'react';
@@ -19,9 +19,11 @@ import {widthPercentageToDP} from 'react-native-responsive-screen';
 import {connect} from 'react-redux';
 import {useEffect} from 'react'; 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
+import Modal from "react-native-modal";
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 const Profile = ({userData, navigation}) => {
   const tailwind = useTailwind();
+  const [isVisible, setisVisible] = useState(false)
   const [isSubscribe, setisSubscribe] = useState(true);
   useEffect(() => {
     console.log('====================================');
@@ -99,14 +101,7 @@ const Profile = ({userData, navigation}) => {
           alert(response.errorMessage);
           return;
         }
-        console.log('base64 -> ', response.base64);
-        console.log('uri -> ', response.uri);
-        console.log('width -> ', response.width);
-        console.log('height -> ', response.height);
-        console.log('fileSize -> ', response.fileSize);
-        console.log('type -> ', response.type);
-        console.log('fileName -> ', response.fileName);
-        setFilePath(response);
+        setFilePath(response.assets);
       });
     }
   };
@@ -119,7 +114,7 @@ const Profile = ({userData, navigation}) => {
       quality: 1,
     };
     launchImageLibrary(options, (response) => {
-      console.log('Response = ', response);
+      console.log('Response = ', response.assets);
 
       if (response.didCancel) {
         alert('User cancelled camera picker');
@@ -134,14 +129,7 @@ const Profile = ({userData, navigation}) => {
         alert(response.errorMessage);
         return;
       }
-      console.log('base64 -> ', response.base64);
-      console.log('uri -> ', response.uri);
-      console.log('width -> ', response.width);
-      console.log('height -> ', response.height);
-      console.log('fileSize -> ', response.fileSize);
-      console.log('type -> ', response.type);
-      console.log('fileName -> ', response.fileName);
-      setFilePath(response);
+      setFilePath(response.assets);
     });
   };
 
@@ -150,22 +138,27 @@ const Profile = ({userData, navigation}) => {
       <ScrollView style={tailwind('')} showsVerticalScrollIndicator={false}>
         <View style={tailwind('items-center flex m-5 ')}>
           <View style={tailwind('mb-2')}>
-            <TouchableOpacity style={tailwind('bg-gray-100 p-5 rounded-full')} onPress={() => captureImage('photo')}>
+          
               <Image source={{uri: filePath.uri}} style={styles.userAvatar} />
-            </TouchableOpacity>
+              <TouchableOpacity style={tailwind('bg-gray-100 p-5 rounded-full')} onPress={() => setisVisible(!isVisible)}>
+              <Image source={images.arrowBack} style={styles.userAvatar} />
+              </TouchableOpacity>
           </View>
           <View style={tailwind('flex-row')}>
             <Text style={[tailwind(''), styles.textTitle]}>
               {userData.name}
-            </Text>
-            {isSubscribe ? (
+            </Text> 
+            {userData.is_subscribe ? (
               <View style={tailwind('self-center')}>
-                <Image 
+                {/* <Image 
                   source={images.logoSecond}
                   style={[tailwind('self-center'), styles.imageLogoSubs]}
-                />
+                /> */}
+                <Text style={[tailwind(''), styles.textPremium]}>
+              {" "}(Premium)
+            </Text>
               </View>
-            ) : null}
+            ) : null} 
           </View>
           <Text style={[tailwind(), styles.text]}>{userData.email}</Text>
         </View>
@@ -215,6 +208,25 @@ const Profile = ({userData, navigation}) => {
         </View>
      
       </ScrollView>
+      <View>
+      <Modal isVisible={isVisible}>
+        <View style={tailwind('bg-white p-5')}>
+          <Text style={[tailwind('text-center'), styles.textTitle]}>Pilih Opsi Dibawah</Text>
+          <View style={tailwind('flex-row justify-around m-4')}>
+            <Pressable onPress={() => captureImage('photo')}>
+            <Image source={images.cameraIcon} style={styles.userAvatar} />
+            </Pressable>
+           <Pressable onPress={() => chooseFile('photo')}>
+           <Image source={images.galleryIcon} style={styles.userAvatar} />
+           </Pressable>
+          </View>
+          <Pressable onPress={() => setisVisible(false)}>
+        <Text style={[tailwind('text-center '), styles.textTitle]}>Batal</Text>
+        </Pressable>
+        </View>
+       
+      </Modal>
+    </View>
     </View>
   );
 };
@@ -238,6 +250,11 @@ const styles = StyleSheet.create({
     fontFamily: FONT_PRIMARY_BOLD,
     color: black,
   },
+  textPremium: {
+    fontSize: widthPercentageToDP(4),
+    fontFamily: FONT_PRIMARY_BOLD,
+    color: blue_primary,
+  },
   text: {
     fontSize: widthPercentageToDP(3),
     fontFamily: FONT_PRIMARY_REGULAR,
@@ -248,4 +265,5 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  
 });

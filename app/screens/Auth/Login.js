@@ -57,6 +57,7 @@ const Login = ({navigation, saveUserData}) => {
             phoneNum: response.data.data.phone_number,
             instance: response.data.data.instance,
             is_subscribed: response.data.data.is_subscribed,
+            
           });
           await AsyncStorage.setItem('@token', response.data.data.token);
           showSuccessToast('Login Berhasil');
@@ -104,6 +105,16 @@ const Login = ({navigation, saveUserData}) => {
                 By Signing In, You re agree to our Terms and Conditions and
                 Privacy Policy.
               </Text>
+            </View>
+            <View style={tailwind('self-center flex-row')}>
+              <Text style={[tailwind('my-5'), styles.text]}>
+                Forgot Password ?{' '}
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ForgotPasswordScreen')}
+                style={tailwind('self-center ')}>
+                <Text style={[styles.textBottom]}>Click Here.</Text>
+              </TouchableOpacity>
             </View>
           </View>
 

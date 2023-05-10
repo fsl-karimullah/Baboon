@@ -1,4 +1,4 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useTailwind } from 'tailwind-rn';
 import HeaderBack from '../../components/Header/HeaderBack';
@@ -23,22 +23,27 @@ import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import images from '../../resource/images';
+import { saveBookmarkData } from '../../redux/actions/getBookmarkAction';
+import { showErrorToast, showSuccessToast } from '../../resource/Helper';
 
 
-const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userData }) => {
+const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userData ,bookmarkData}) => {
   const tailwind = useTailwind();
   const [isLoading, setisLoading] = useState(false);
   const { id } = route.params;
+  
 
   useEffect(() => {
-    console.log("+++++++", userData);
+    console.log("+++++++", bookmarkData);
     getData(); 
-  }, []);
+  }, []); 
 //api/books/2/bookmark //bookmark a book
 
   const getData = async () => {
     setisLoading(true);
     const token = await AsyncStorage.getItem('@token');
+
+    console.log(id)
 
     await axios
       .get(`http://127.0.0.1:8000/api/books/${id}`, {
@@ -57,27 +62,64 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
   };
   const bookMark = async () => {
     setisLoading(true);
+    
     const token = await AsyncStorage.getItem('@token'); 
     await axios 
-      .post(`http://127.0.0.1:8000/api/books/${id}/bookmark`, {
+      .post(`http://127.0.0.1:8000/api/books/${id}/bookmark`,{}, {
         headers: {
           Authorization: 'Bearer ' + token,
-          Accept : 'application/json',
-          'Content-Type' : 'application/json',
+          Accept: 'application/json' 
         },
       })
       .then(function (response) {
-        console.log('BOOKMARK', response.data.data);
-        // saveBookDetail(response.data.data);
-        // setisLoading(false);
+        saveBookmarkData(response.data.data);
+        showSuccessToast('Buku Telah Ditambahkan Ke Bookmark');
+        setisLoading(false);
+        
       })
       .catch(function (error) {
         console.log(error);
+        showErrorToast('Buku Telah Di Bookmark');
       });
   };
+  const removeBookmark = async () => {
+    setisLoading(true);
+    
+    const token = await AsyncStorage.getItem('@token'); 
+    await axios 
+      .delete(endpoint.deleteBookmark + id, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/json' 
+        },
+      })
+      .then(function (response) {
+        saveBookmarkData(response.data.data);
+        showSuccessToast('Buku Telah Berhasil Dihapus Dari Bookmark');
+        setisLoading(false);
+        
+      }) 
+      .catch(function (error) {
+        console.log(error);
+        showErrorToast('Buku Telah Di Hilangkan Dari Bookmark');
+      });
+  };
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   return (
     <View style={tailwind('flex-1 bg-white')}>
-      <ScrollView>
+      <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      >
         <View style={tailwind('self-center mt-5')}>
           <Image
             source={bookDataDetail.thumbnail === 'http://127.0.0.1:8000/storage/test' ? images.noImage : { uri: bookDataDetail.thumbnail }}
@@ -131,7 +173,7 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
                   tailwind('text-center p-3 bg-red-300 text-white rounded'),
                   styles.textWarning,
                 ]}>
-                Anda Belum berlangganan
+                Anda Belum berlangganan 
               </Text>
             </View>) : (<View style={tailwind('my-4')}>
               <Text
@@ -163,7 +205,7 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
       </ScrollView>
       <View style={tailwind('py-2 flex-row self-center')}>
         <View style={tailwind('mx-4')}>
-          <ButtonPrimary customTextTitle={{ fontSize: 13 }} title="Bookmark" onPress={bookMark} />
+          <ButtonPrimary customTextTitle={{ fontSize: 13 }} title={bookDataDetail.is_bookmarked ? 'Remove Bookmark' : "Add to Bookmark" } onPress={bookDataDetail.is_bookmarked ? removeBookmark : bookMark} />
         </View>
         <View style={tailwind('mx-4')}>
           <ButtonPrimary
@@ -183,12 +225,14 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
 
 const mapDispatchToProps = {
   saveBookDetail,
+  saveBookmarkData
 };
 
 const mapStateToProps = state => {
   return {
     bookDataDetail: state.bookData.dataDetail,
-    userData: state.userData.data
+    userData: state.userData.data,
+    bookmarkData :state.bookmarkData.data
   };
 };
 

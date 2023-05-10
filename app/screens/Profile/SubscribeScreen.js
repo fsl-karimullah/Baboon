@@ -10,9 +10,11 @@ import ButtonPrimary from '../../components/Button/ButtonPrimary'
 import { endpoint } from '../../api/apiService'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { connect } from 'react-redux'
+import { savePaymentData } from '../../redux/actions/getPaymentData'
 
 //http://127.0.0.1:8000/api/subscribe/2
-const SubscribeScreen = () => {
+const SubscribeScreen = ({savePaymentData,navigation,paymentData}) => {
   const tailwind = useTailwind();
   const data = [
     {
@@ -20,23 +22,28 @@ const SubscribeScreen = () => {
       value: '1'
     },
     {
-      label: '3 Bulan',
-      value: '3'
+      label: '2 Bulan',
+      value: '2'
     },
     {
-      label: '6 Bulan',
-      value: '6'
+      label: '3 Bulan',
+      value: '3'
     }
   ];
 
   const subscribeAction = async (value) => {
     const token = await AsyncStorage.getItem('@token'); 
-    axios
-    .post(endpoint.payment + value, {
+   await axios
+   .post(endpoint.payment + value,{}, {
+    headers: {
       Authorization: 'Bearer ' + token,
-    })
+      Accept: 'application/json' 
+    },
+  })
     .then(async function (response) {
-      console.log('RESPONSE', response);
+      console.log('RESPONSE', response.data);
+      savePaymentData(response.data)
+      console.log('PAYMENT',paymentData.data.redirect_url);
      
     })
     .catch(function (error) {
@@ -58,12 +65,14 @@ const SubscribeScreen = () => {
           <Image source={images.logoSecond} style={[tailwind('self-center'), styles.images]} />
         </View>
         <View>
-          <RadioButtonRN
+          <RadioButtonRN 
             data={data}
             selectedBtn={(e) => subscribeAction(e.value)}
           />
           <View style={tailwind('my-5')}>
-            <ButtonPrimary title={'Langganan'} />
+            <ButtonPrimary title={'Langganan'} onPress={() => navigation.navigate('WebViewScreen', {
+              uri: paymentData.data.redirect_url 
+            })}  />
           </View>
         </View>
       </View>
@@ -71,7 +80,18 @@ const SubscribeScreen = () => {
   )
 }
 
-export default SubscribeScreen
+const mapDispatchToProps = {
+  savePaymentData,
+  
+};
+
+const mapStateToProps = state => {
+  return {
+    paymentData: state.paymentData.data,
+    
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SubscribeScreen);
 
 const styles = StyleSheet.create({
   text: {

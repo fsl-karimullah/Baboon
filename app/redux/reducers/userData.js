@@ -1,7 +1,7 @@
 const initialState = {
   data: {},
-  //   danaData: {},
-  //   danaPaymentData: {},
+  isLogin: false
+  
 };
 
 export default (state = initialState, action) => {

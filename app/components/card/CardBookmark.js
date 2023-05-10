@@ -8,15 +8,15 @@ import {
 import {FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR} from '../../resource/style';
 import {black} from '../../resource/colors';
 import images from '../../resource/images';
-const CardBookmark = ({title, author, onPress, imgSrc}) => {
+const CardBookmark = ({title, author, onPress, imgSrc,onPressRightIcon}) => {
   const tailwind = useTailwind();
   return (
     <View
-      onPress={onPress}
+      
       style={tailwind(
         'flex-row justify-between border-b-2 border-gray-300 mx-5 py-3',
       )}>
-      <TouchableOpacity style={tailwind('flex-row')}>
+      <TouchableOpacity style={tailwind('flex-row')} onPress={onPress}>
         <Image style={styles.imageBook} source={imgSrc} />
         <View style={tailwind('m-5')}>
           <Text style={styles.textTitle}>{title}</Text>
@@ -24,7 +24,7 @@ const CardBookmark = ({title, author, onPress, imgSrc}) => {
         </View>
       </TouchableOpacity>
       <View style={tailwind('self-start')}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPressRightIcon}>
           <Image style={styles.imageSaved} source={images.bookMarkActive} />
         </TouchableOpacity>
       </View>

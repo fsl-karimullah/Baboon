@@ -18,5 +18,8 @@ const images = {
   userInactive: require('../assets/images/Homepage/user-inactive.png'),
   userActive: require('../assets/images/Homepage/user-active.png'),
   pdfIcon: require('../assets/images/Homepage/pdf-icon.png'),
+  cameraIcon: require('../assets/images/camera.png'),
+  galleryIcon: require('../assets/images/gallery.png'),
+  emptyIcon: require('../assets/images/search.png'),
 };
 export default images;

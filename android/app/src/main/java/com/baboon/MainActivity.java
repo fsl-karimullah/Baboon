@@ -3,6 +3,8 @@ package com.baboon;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import android.view.WindowManager;
+import android.os.Bundle;
 
 public class MainActivity extends ReactActivity {
 
@@ -10,10 +12,20 @@ public class MainActivity extends ReactActivity {
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
    */
-  @Override
+  @Override  
   protected String getMainComponentName() {
     return "Baboon";
   }
+
+@Override
+   protected void onCreate(Bundle savedInstanceState) {
+     super.onCreate(savedInstanceState);
+  
+     getWindow().setFlags(
+       WindowManager.LayoutParams.FLAG_SECURE,
+       WindowManager.LayoutParams.FLAG_SECURE
+     );
+   }
 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
@@ -28,6 +40,7 @@ public class MainActivity extends ReactActivity {
   public static class MainActivityDelegate extends ReactActivityDelegate {
     public MainActivityDelegate(ReactActivity activity, String mainComponentName) {
       super(activity, mainComponentName);
+      
     }
 
     @Override
@@ -36,7 +49,7 @@ public class MainActivity extends ReactActivity {
       // If you opted-in for the New Architecture, we enable the Fabric Renderer.
       reactRootView.setIsFabric(BuildConfig.IS_NEW_ARCHITECTURE_ENABLED);
       return reactRootView;
-    }
+    } 
 
     @Override
     protected boolean isConcurrentRootEnabled() {
@@ -45,4 +58,7 @@ public class MainActivity extends ReactActivity {
       return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     }
   }
+  
+
+  
 }
