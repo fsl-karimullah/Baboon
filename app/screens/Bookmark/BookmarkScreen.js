@@ -96,7 +96,7 @@ const BookmarkScreen = ({saveBookmarkData, bookmarkData, navigation}) => {
                       onPress={() =>
                         navigation.push('DetailBook', { 
                           id: item.book_id,
-                          
+                          bookmarkId:item.id
                         }) 
                       }
                       author={item.authors ? item.authors[0] : 'No Author'}

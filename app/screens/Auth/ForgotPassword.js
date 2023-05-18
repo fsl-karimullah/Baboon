@@ -34,42 +34,27 @@ import {
   const ForgotPassword = ({navigation, saveUserData}) => {
     const tailwind = useTailwind();
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-    const [password, setPassword] = useState('');
     const [Email, setEmail] = useState('');
-    const userLogin = async () => {
-      resetUserData();
-      if (Email === '' || password === '') {
+    const forgotPasswordFunction =  () => {
+      if (Email === '') { 
         showErrorToast('Semua Data Wajib Di Isi !');
       } else if (reg.test(Email) === false) {
         showErrorToast('Mohon Masukkan Email Yang Valid !');
       } else {
         axios
-          .post(endpoint.loginUser, {
-            email: Email, 
-            // instance: instance,
-            password: password,
+          .post(endpoint.forgotPassword, {
+            email: Email,  
           })
-          .then(async function (response) {
-            console.log('LOGIN RESPONSE', response.data.data);
-            saveUserData({
-              name: response.data.data.name,
-              email: response.data.data.email,
-              phoneNum: response.data.data.phone_number,
-              instance: response.data.data.instance,
-              is_subscribed: response.data.data.is_subscribed,
-            });
-            await AsyncStorage.setItem('@token', response.data.data.token);
-            showSuccessToast('Login Berhasil');
-            setEmail('');
-            setPassword('');
-            navigation.navigate('Homepage');
+          .then(function (response) {
+            console.log(response.data.status);
+            showSuccessToast(response.data.status); 
           })
-          .catch(function (error) {
-            console.log(error.request._response);
-            showErrorToast("Mohon cek email dan password anda kembali");
+          .catch(function (error) {    
+            console.log(error);
+            showErrorToast("Terjadi Kesalahan mohon cek data anda dan coba lagi nanti");
           });
       }
-    };
+    }; 
     return (
       <SafeAreaView style={tailwind('flex-1 bg-white ')}>
         {/* <HeaderBack title={'Sign In'} onPress={() => navigation.goBack()} /> */}
@@ -97,11 +82,9 @@ import {
                   Cek email anda untuk mendapatkan notifikasi reset password dari Baboon.
                 </Text>
               </View>
-              
             </View>
-  
             <View>
-              <ButtonPrimary title="Send Otp" onPress={userLogin} />
+              <ButtonPrimary title="Reset Password" onPress={forgotPasswordFunction} />
               <View style={tailwind('self-center flex-row')}>
                 <Text style={[tailwind('my-5'), styles.text]}>
                   Belum memiliki akun ?{' '}

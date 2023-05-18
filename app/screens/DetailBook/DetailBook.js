@@ -30,7 +30,7 @@ import { showErrorToast, showSuccessToast } from '../../resource/Helper';
 const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userData ,bookmarkData}) => {
   const tailwind = useTailwind();
   const [isLoading, setisLoading] = useState(false);
-  const { id } = route.params;
+  const { id, bookmarkId } = route.params;
   
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
     
     const token = await AsyncStorage.getItem('@token'); 
     await axios 
-      .delete(endpoint.deleteBookmark + id, {
+      .delete(endpoint.deleteBookmark + bookmarkId, { 
         headers: {
           Authorization: 'Bearer ' + token,
           Accept: 'application/json' 

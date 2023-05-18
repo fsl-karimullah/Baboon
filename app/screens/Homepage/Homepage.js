@@ -10,6 +10,8 @@ import {
   Linking,
   RefreshControl,
   ActivityIndicator,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import HeaderHomepage from '../../components/Header/HeaderHomepage';
@@ -51,16 +53,36 @@ const Homepage = ({
   const [categoryId, setcategoryId] = useState()
   const [searchBar, setsearchBar] = useState()
   const tailwind = useTailwind();
-  useEffect(() => {
-    console.log("THUMB", categoryData);
-    getCategory()
-    getData();
-  }, []);
-  const getData = async () => {
-    if (page <= 1) {
-      setisLoading(true);
-    }
 
+
+  useEffect(() => {
+    if (page == 1) {
+      getCategory()
+    }
+    getData();
+    const backAction = () => {
+      Alert.alert('Perhatian', 'Apakah anda yakin akan keluar ?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [page]);
+  
+
+  const getData = async () => {
+    setisLoading(true);
     const token = await AsyncStorage.getItem('@token');
 
     await axios
@@ -75,21 +97,21 @@ const Homepage = ({
           response.data.data.forEach(element => {
             books.push(element)
           });
-
           let objects = bookData
           objects.data = books
+          objects.links = response.data.links.next == null ? false : response.data.links.next
           saveBookData(objects);
+          setisLoading(false);
         } else {
           saveBookData(response.data)
+          setisLoading(false);
         }
-
-
-        setisLoading(false);
       })
       .catch(function (error) {
-        console.log(error);
       });
   };
+
+
   const getSearchData = async (searchBar) => {
     setisLoading(true);
     const token = await AsyncStorage.getItem('@token');
@@ -104,7 +126,6 @@ const Homepage = ({
         setisLoading(false);
       })
       .catch(function (error) {
-        console.log(error);
       });
   };
   const getByCategory = async (category_id) => {
@@ -122,7 +143,6 @@ const Homepage = ({
         setisLoading(false);
       })
       .catch(function (error) {
-        console.log(error);
       });
   };
   const getCategory = async () => {
@@ -141,23 +161,23 @@ const Homepage = ({
         setisLoading(false);
       })
       .catch(function (error) {
-        console.log(error);
       });
   };
 
 
   const getMoreData = (bookData) => {
-    console.log('TESTETESTE')
+  console.log('TEST')
+  console.log(bookData.links)
     if (bookData.links.next) {
       setpage(page + 1)
-      getData()
     }
   };
+
   const onRefresh = async () => {
     setpage(1)
     setRefreshing(true);
-    await getData();
     setRefreshing(false);
+    getData()
   }
 
   const bottomLoader = () => {
@@ -191,7 +211,7 @@ const Homepage = ({
           <View style={tailwind('mt-3 pb-16')}>
             <FlatList
               numColumns={numColumn} 
-              onRefresh={onRefresh}
+             
               ListHeaderComponent={() => (
                 <View>
                   <View>
@@ -226,6 +246,7 @@ const Homepage = ({
                     <FlatList
                       horizontal={true}
                       showsHorizontalScrollIndicator={false}
+                      onRefresh={refreshing}
                       data={categoryData}
                       keyExtractor={(item, index) => index.toString()}
                       renderItem={({ item, index }) => (
@@ -250,14 +271,17 @@ const Homepage = ({
               )}
               onEndReached={() => getMoreData(bookData)}
               refreshing={refreshing}
+              onRefresh={onRefresh}
               data={bookData.data}
               ListEmptyComponent={<EmptyComponent title={'Buku yang anda cari tidak ada'} />}
-              ListFooterComponent={bottomLoader}
+              ListFooterComponent={!isLoading ? bottomLoader : null}
               keyExtractor={(item, index) => index.toString()}
+              
+
               renderItem={({ item, index }) => (
                 <View style={tailwind('flex-1 flex-row justify-evenly')}>
 
-                  <Card
+                  <Card 
                     customStyleContainer={tailwind('my-3 ')}
                     titleBook={item.title || 'No Title'}
                     onPress={() =>
@@ -267,16 +291,14 @@ const Homepage = ({
                     }
                     author={item.authors ? item.authors[0] : 'No Author'}
                     imageSrc={
-
                       item.thumbnail === 'http://127.0.0.1:8000/storage/test' || item.thumbnail === '' ? images.noImage : { uri: item.thumbnail }
-
                     }
-                  />
-                </View>
-              )}
-            />
-          </View>
-        )}
+                  /> 
+                </View> 
+              )} 
+            />  
+          </View> 
+        )} 
       </View>
     </SafeAreaView>
   );
@@ -287,11 +309,11 @@ const mapDispatchToProps = {
   saveBookData,
   saveCategoryData
 };
-
+ 
 const mapStateToProps = state => {
   return {
     bookData: state.bookData.data,
-    userData: state.userData.data,
+    userData: state.userData.data, 
     categoryData: state.categoryData.data
   };
 };

@@ -107,8 +107,6 @@ const Register = ({navigation, saveUserData}) => {
               value={phoneNum}
               onchangeText={phoneNum => setphoneNum(phoneNum)}
             />
-
-            
             <InputCustom
               title="Password"
               isSecureTextEntry

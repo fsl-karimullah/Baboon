@@ -11,5 +11,10 @@ export const endpoint =  {
   searchBookByCategory: `${url}/books/?category_id=`,
   deleteBookmark: `${url}/bookmarks/`,
   selectCategory: `${url}/categories`,
-};
+  editProfile : `${url}/profile`,
+  forgotPassword:`${url}/forgot-password`,
+  logout:`${url}/logout`,
+   
+
+}; 
  
