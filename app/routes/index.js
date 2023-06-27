@@ -124,6 +124,7 @@ const App = ({userData}) => {
   return (
     <NavigationContainer>
       <Stack.Navigator
+      initialRouteName='SplashScreen'
         screenOptions={{
           headerShown: false,
         }}>
@@ -253,7 +254,7 @@ const App = ({userData}) => {
         <Stack.Screen
           options={{
             headerShown: true,
-            title: 'Read Book',
+            title: 'User Guide',
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontFamily: FONT_PRIMARY_BOLD,

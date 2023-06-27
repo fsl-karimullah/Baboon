@@ -13,7 +13,7 @@ const SplashScreen = ({navigation}) => {
   const tailwind = useTailwind();
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('Register');
+      navigation.replace('Login');
     }, 2000);
   }, []);
 

@@ -244,7 +244,7 @@ const onRefresh = React.useCallback(() => {
                   style={[tailwind('self-center'), styles.imageLogoSubs]}
                 /> */}
                 <Text style={[tailwind(''), styles.textPremium]}>
-              {" "}(Premium)
+              {" "}(Berlangganan)
             </Text>
               </View>
             ) : null} 

@@ -78,7 +78,7 @@ const Login = ({navigation, saveUserData}) => {
         <View style={tailwind('self-center')}>
           <Image
             style={[tailwind('my-5'), styles.imageLogin]}
-            source={images.signInImg}
+            source={images.logoFirst}
           />
         </View>
         <KeyboardAvoidingView
@@ -127,7 +127,17 @@ const Login = ({navigation, saveUserData}) => {
               <TouchableOpacity
                 onPress={() => navigation.navigate('Register')}
                 style={tailwind('self-center ')}>
-                <Text style={[styles.textBottom]}>Register Disini.</Text>
+                <Text style={[styles.textBottom]}>Register Disini.</Text> 
+              </TouchableOpacity>
+            </View>
+            <View style={tailwind('self-center flex-row')}>
+              <Text style={[tailwind('my-5'), styles.text]}> 
+                Tutorial Berlangganan ke dalam aplikasi ?{' '}
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('PdfScreen', {uri : 'http://127.0.0.1:8000/storage/public/NsC2jWu1M68kYobm7UipuRCu6ELyAU-metaQ0FSQSBCRVJMQU5HR0FOQU4gS0UgREFMQU0gQVBMSUtBU0kgQkFDQSBCVUtVIE9OTElORSBQT0xJSkUgUFJFU1MgLSBORVcucGRm-.pdf'} )}
+                style={tailwind('self-center ')}>
+                <Text style={[styles.textBottom]}>Disini.</Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -62,7 +62,7 @@ import {
           <View style={tailwind('self-center')}>
             <Image
               style={[tailwind('my-5'), styles.imageLogin]}
-              source={images.signInImg}
+              source={images.logoFirst} 
             />
           </View>
           <KeyboardAvoidingView
@@ -71,7 +71,7 @@ import {
               <View>
                 <Text style={[tailwind('my-5'), styles.textTitle]}>Reset Password</Text>
               </View>
-              <InputCustom
+              <InputCustom 
                 title="Email"
                 placeholder={'Email'}
                 value={Email}

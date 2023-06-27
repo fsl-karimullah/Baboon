@@ -74,7 +74,7 @@ const Register = ({navigation, saveUserData}) => {
         <View style={tailwind('self-center')}>
           <Image
             style={[tailwind('my-5'), styles.imageRegister]}
-            source={images.signUpImg}
+            source={images.logoFirst}
           />
         </View>
         <KeyboardAvoidingView

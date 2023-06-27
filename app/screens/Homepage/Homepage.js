@@ -45,7 +45,7 @@ const Homepage = ({
   saveUserData,
   saveCategoryData,
   categoryData
-}) => {
+}) => { 
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [numColumn, setNumColumn] = useState(2);
