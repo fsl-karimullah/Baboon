@@ -10,7 +10,7 @@ const images = {
   signUpImg: require('../assets/images/Auth/sign-up.png'),
   signInImg: require('../assets/images/Auth/login-ilu.png'),
   loupeGray: require('../assets/images/Homepage/loupe-gray.png'),
-  noImage: require('../assets/images/Homepage/no_image.png'),
+  noImage: require('../assets/images/Homepage/img_non.png'),
   homeActive: require('../assets/images/Homepage/home-active.png'),
   homeInactive: require('../assets/images/Homepage/home-inactive.png'),
   bookMarkActive: require('../assets/images/Homepage/bookmark-active.png'),

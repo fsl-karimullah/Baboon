@@ -46,7 +46,7 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
     console.log(id)
 
     await axios
-      .get(`http://127.0.0.1:8000/api/books/${id}`, {
+      .get(`https://ta-mifpolije.com/E31201845/api/books/${id}`, {
         headers: {
           Authorization: 'Bearer ' + token,
         },
@@ -65,7 +65,7 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
     
     const token = await AsyncStorage.getItem('@token'); 
     await axios 
-      .post(`http://127.0.0.1:8000/api/books/${id}/bookmark`,{}, {
+      .post(`https://ta-mifpolije.com/E31201845/api/books/${id}/bookmark`,{}, {
         headers: {
           Authorization: 'Bearer ' + token,
           Accept: 'application/json' 
@@ -122,7 +122,7 @@ const DetailBook = ({ route, navigation, saveBookDetail, bookDataDetail, userDat
       >
         <View style={tailwind('self-center mt-5')}>
           <Image
-            source={bookDataDetail.thumbnail === 'http://127.0.0.1:8000/storage/test' ? images.noImage : { uri: bookDataDetail.thumbnail }}
+            source={bookDataDetail.thumbnail ? images.noImage : { uri: bookDataDetail.thumbnail }}
             style={styles.imageBook}
           />
           <View style={tailwind('my-3 mx-5')}>

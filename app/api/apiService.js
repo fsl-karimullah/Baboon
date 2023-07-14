@@ -1,4 +1,4 @@
-const url = 'http://127.0.0.1:8000/api';
+const url = 'https://ta-mifpolije.com/E31201845/api';
 export const endpoint =  {
   getBook: `${url}/books`,
   getMoreBook: `${url}/books?page=`,
@@ -10,11 +10,9 @@ export const endpoint =  {
   searchBook: `${url}/books?query=`,
   searchBookByCategory: `${url}/books/?category_id=`,
   deleteBookmark: `${url}/bookmarks/`,
-  selectCategory: `${url}/categories`,
+  selectCategory: `${url}/categories`, 
   editProfile : `${url}/profile`,
   forgotPassword:`${url}/forgot-password`,
   logout:`${url}/logout`,
-   
-
 }; 
  

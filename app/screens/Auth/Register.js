@@ -105,6 +105,7 @@ const Register = ({navigation, saveUserData}) => {
               title="Nomor Handphone"
               placeholder={'Contoh : 082318098649'}
               value={phoneNum}
+              keyboardType={'numeric'}
               onchangeText={phoneNum => setphoneNum(phoneNum)}
             />
             <InputCustom
@@ -123,8 +124,7 @@ const Register = ({navigation, saveUserData}) => {
             />
             <View>
               <Text style={[tailwind('my-5'), styles.text]}>
-                By Signing In, You re agree to our Terms and Conditions and
-                Privacy Policy.
+                Dengan Mendaftar, anda menyetujui syarat dan ketentuan kami dan kebijakan pribadi.
               </Text>
             </View>
           </View>

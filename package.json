@@ -1,9 +1,9 @@
 {
   "name": "baboon",
-  "version": "0.0.1",
-  "private": true,
+  "version": "1.2.0",
+  "private": true, 
   "scripts": {
-    "android": "react-native run-android",
+    "android": "react-native run-android", 
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",

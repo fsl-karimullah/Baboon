@@ -350,16 +350,6 @@
 			"paddingTop": 8
 		}
 	},
-	"pb-44": {
-		"style": {
-			"paddingBottom": 176
-		}
-	},
-	"pb-10": {
-		"style": {
-			"paddingBottom": 40
-		}
-	},
 	"pb-16": {
 		"style": {
 			"paddingBottom": 64
@@ -373,6 +363,12 @@
 	"text-lg": {
 		"style": {
 			"fontSize": 18,
+			"lineHeight": 28
+		}
+	},
+	"text-xl": {
+		"style": {
+			"fontSize": 20,
 			"lineHeight": 28
 		}
 	},

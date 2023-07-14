@@ -102,18 +102,17 @@ const Login = ({navigation, saveUserData}) => {
             />
             <View>
               <Text style={[tailwind('my-5'), styles.text]}>
-                By Signing In, You re agree to our Terms and Conditions and
-                Privacy Policy.
+              Dengan Mendaftar, anda menyetujui syarat dan ketentuan kami dan kebijakan pribadi.
               </Text>
             </View>
             <View style={tailwind('self-center flex-row')}>
               <Text style={[tailwind('my-5'), styles.text]}>
-                Forgot Password ?{' '}
+                Lupa Password ?{' '} 
               </Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate('ForgotPasswordScreen')}
                 style={tailwind('self-center ')}>
-                <Text style={[styles.textBottom]}>Click Here.</Text>
+                <Text style={[styles.textBottom]}>Disini.</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -135,7 +134,7 @@ const Login = ({navigation, saveUserData}) => {
                 Tutorial Berlangganan ke dalam aplikasi ?{' '}
               </Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('PdfScreen', {uri : 'http://127.0.0.1:8000/storage/public/NsC2jWu1M68kYobm7UipuRCu6ELyAU-metaQ0FSQSBCRVJMQU5HR0FOQU4gS0UgREFMQU0gQVBMSUtBU0kgQkFDQSBCVUtVIE9OTElORSBQT0xJSkUgUFJFU1MgLSBORVcucGRm-.pdf'} )}
+                onPress={() => navigation.navigate('PdfScreen', {uri : 'https://fsl-karimullah.github.io/Baboon-Guide/BABOON-GUIDE.pdf'} )}
                 style={tailwind('self-center ')}>
                 <Text style={[styles.textBottom]}>Disini.</Text>
               </TouchableOpacity>

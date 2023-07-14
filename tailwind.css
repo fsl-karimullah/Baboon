@@ -250,14 +250,6 @@
   padding-top: 0.5rem
 }
 
-.pb-44 {
-  padding-bottom: 11rem
-}
-
-.pb-10 {
-  padding-bottom: 2.5rem
-}
-
 .pb-16 {
   padding-bottom: 4rem
 }
@@ -268,6 +260,11 @@
 
 .text-lg {
   font-size: 1.125rem;
+  line-height: 1.75rem
+}
+
+.text-xl {
+  font-size: 1.25rem;
   line-height: 1.75rem
 }
 

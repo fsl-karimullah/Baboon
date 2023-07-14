@@ -101,7 +101,7 @@ const BookmarkScreen = ({saveBookmarkData, bookmarkData, navigation}) => {
                       }
                       author={item.authors ? item.authors[0] : 'No Author'}
                       imgSrc={
-                          item.thumbnail === 'http://127.0.0.1:8000/storage/test' || item.thumbnail === '' ? images.noImage : {uri: item.thumbnail}   
+                          item.thumbnail  || item.thumbnail === '' ? images.noImage : {uri: item.thumbnail}   
                       } 
                     /> 
                   </View> 

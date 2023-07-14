@@ -30,7 +30,9 @@ const InputCustom = ({
   errorMessage,
   keyboardType,
   autoCapitalize,
-  defaultValue
+  defaultValue,
+  onChange,
+  onEndEditing
 }) => {
   const tailwind = useTailwind();
   return (
@@ -43,11 +45,13 @@ const InputCustom = ({
             style={[styles.input, customStyleInput]}
             onChangeText={onchangeText}
             value={value}
+            onChange={onChange}
             placeholder={placeholder}
             keyboardType={keyboardType}
             secureTextEntry={isSecureTextEntry}
             autoCapitalize={autoCapitalize}
             defaultValue={defaultValue}
+            onEndEditing={onEndEditing}
           />
           {isIconRight ? (
             <TouchableOpacity

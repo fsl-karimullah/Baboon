@@ -267,6 +267,7 @@ const onRefresh = React.useCallback(() => {
           title="No phone"
           defaultValue={userData.phoneNum}
           placeholder={'No Phone'}
+          keyboardType={'numeric'}
           onchangeText={text => setPhoneNumber(text)}
         />
         
@@ -278,8 +279,7 @@ const onRefresh = React.useCallback(() => {
         /> 
         <View style={tailwind('mb-5')}>
           <Text style={styles.text}>
-            Anda bisa langsung mengubah atau mengisikan data baru ke dalam form,
-            setelah itu klik save untuk mengedit data profile anda
+           Data Profile Anda
           </Text>
         </View>
 

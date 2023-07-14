@@ -32,6 +32,8 @@ import { saveUserData } from '../../redux/actions/userRegisterAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EmptyComponent from '../../components/EmptyComponent';
 import { saveCategoryData } from '../../redux/actions/getCategoryAction'
+import { showErrorToast } from '../../resource/Helper';
+import { useCallback } from 'react';
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
@@ -51,7 +53,7 @@ const Homepage = ({
   const [numColumn, setNumColumn] = useState(2);
   const [page, setpage] = useState(1)
   const [categoryId, setcategoryId] = useState()
-  const [searchBar, setsearchBar] = useState()
+  const [searchBar, setsearchBar] = useState('')
   const tailwind = useTailwind();
 
 
@@ -79,8 +81,14 @@ const Homepage = ({
 
     return () => backHandler.remove();
   }, [page]);
-  
+   
+  const handleSearchValue = useCallback((ev) => {
+    const input =  ev.nativeEvent.text;
 
+// validate all you want here
+
+  setsearchBar(input)
+}, [searchBar]);
   const getData = async () => {
     setisLoading(true);
     const token = await AsyncStorage.getItem('@token');
@@ -113,7 +121,7 @@ const Homepage = ({
 
 
   const getSearchData = async (searchBar) => {
-    setisLoading(true);
+    
     const token = await AsyncStorage.getItem('@token');
     await axios
       .get(endpoint.searchBook + searchBar, {
@@ -123,9 +131,10 @@ const Homepage = ({
       })
       .then(function (response) {
         saveBookData(response.data);
-        setisLoading(false);
+       
       })
       .catch(function (error) {
+        showErrorToast("Terjadi Kesalahan",error)
       });
   };
   const getByCategory = async (category_id) => {
@@ -143,6 +152,7 @@ const Homepage = ({
         setisLoading(false);
       })
       .catch(function (error) {
+        showErrorToast("Terjadi Kesalahan",error)
       });
   };
   const getCategory = async () => {
@@ -155,12 +165,13 @@ const Homepage = ({
           Authorization: 'Bearer ' + token,
 
         },
-      })
+      }) 
       .then(function (response) {
         saveCategoryData(response.data.data);
         setisLoading(false);
       })
       .catch(function (error) {
+        showErrorToast("Terjadi Kesalahan",error)
       });
   };
 
@@ -216,20 +227,20 @@ const Homepage = ({
                 <View>
                   <View>
                     <Text style={[tailwind(''), styles.text]}>
-                      Welcome Back, {userData.name} !
+                      Selamat Datang, {userData.name} !
                     </Text>
                     <Text style={[tailwind(''), styles.textTitle]}>
-                      What do you want to read today?
+                      Buku apa yang ingin akan anda baca ?
                     </Text>
                   </View>
                   <View>
                     <InputCustom
-                      placeholder={'Search'}
+                      placeholder={'Cari Buku'}
                       isIconRight={true}
                       onPressIconRight={() => getSearchData(searchBar)}
                       imageIconRight={images.loupeGray}
-                      value={searchBar}
-                      onchangeText={searchBar => setsearchBar(searchBar)}
+                      onEndEditing={handleSearchValue}
+                      defaultValue={searchBar}
                       customStyleInput={{
                         borderRadius: 10,
                         paddingHorizontal: 10,
@@ -291,7 +302,7 @@ const Homepage = ({
                     }
                     author={item.authors ? item.authors[0] : 'No Author'}
                     imageSrc={
-                      item.thumbnail === 'http://127.0.0.1:8000/storage/test' || item.thumbnail === '' ? images.noImage : { uri: item.thumbnail }
+                      item.thumbnail  || item.thumbnail === '' ? images.noImage : { uri: item.thumbnail }
                     }
                   /> 
                 </View> 

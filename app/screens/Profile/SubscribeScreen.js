@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React,{useState} from 'react'
 import { black } from '../../resource/colors'
 import { FONT_PRIMARY_BOLD, FONT_PRIMARY_REGULAR } from '../../resource/style'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
@@ -13,10 +13,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { connect } from 'react-redux'
 import { savePaymentData } from '../../redux/actions/getPaymentData'
 
-//http://127.0.0.1:8000/api/subscribe/2
 const SubscribeScreen = ({savePaymentData,navigation,paymentData}) => {
   const tailwind = useTailwind();
-  const data = [
+  const [Month, setMonth] = useState({})
+  const dataa = [
     {
       label: '1 Bulan',
       value: '1'
@@ -33,22 +33,19 @@ const SubscribeScreen = ({savePaymentData,navigation,paymentData}) => {
 
   const subscribeAction = async (value) => {
     const token = await AsyncStorage.getItem('@token'); 
-   await axios
+    await axios
    .post(endpoint.payment + value,{}, {
     headers: {
       Authorization: 'Bearer ' + token,
       Accept: 'application/json' 
     },
-  })
-    .then(async function (response) {
+  }).then(async function (response) {
       console.log('RESPONSE', response.data);
       savePaymentData(response.data)
       console.log('PAYMENT',paymentData.data.redirect_url);
-     
     })
     .catch(function (error) {
       console.log(error);
-      
     });
   }
 
@@ -65,9 +62,10 @@ const SubscribeScreen = ({savePaymentData,navigation,paymentData}) => {
           <Image source={images.logoSecond} style={[tailwind('self-center'), styles.images]} />
         </View>
         <View>
-          <RadioButtonRN 
-            data={data}
-            selectedBtn={(e) => subscribeAction(e.value)}
+          <RadioButtonRN  
+            data={dataa}
+            selectedBtn={(e) => subscribeAction(e.value)} 
+            textColor='#000'
           />
           <View style={tailwind('my-5')}>
             <ButtonPrimary title={'Langganan'} onPress={() => navigation.navigate('WebViewScreen', {
